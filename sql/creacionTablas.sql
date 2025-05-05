@@ -13,15 +13,6 @@ CREATE TABLE Usuario (
 
 );
 
--- Tabla Administrador (hereda de Usuario)
-CREATE TABLE Administrador (
-    id_usuario INTEGER PRIMARY KEY,
-    departamento TEXT,
-    nivel_acceso INTEGER,
-    estado boolean
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
-
 -- Tabla Cuenta
 CREATE TABLE Cuenta (
     id_cuenta INTEGER PRIMARY KEY AUTOINCREMENT,
