@@ -1,26 +1,24 @@
 spring:
   application:
-    name: alkywallet
+    name: alkywallet # nombre de la aplicacion dentro de spring
 
   h2:
     console:
-      enabled: true
-      path: /h2
+      enabled: true # habilita la consola de la base de datos
+      path: /h2 # permite modificar la url de la base de datos
 
   #Conexion a base de datos
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:alkywalletdb
+    driver-class-name: org.h2.Driver #declaracion del driver a utilizar
+    url: jdbc:h2:mem:alkywalletdb # declaracion de la BD
     username: admin
     password:
 
   jpa:
-    database: h2
-    hibernate:
-      ddl-auto: update
-    defer-datasource-initialization: true
+    defer-datasource-initialization: true # permite tomar un archivo sql para cargar datos en tablas
+
 
 #Logs para bases de datos
 logging:
   level:
-    sql: debug
+    sql: debug #
