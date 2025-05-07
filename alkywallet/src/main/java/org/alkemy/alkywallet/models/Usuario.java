@@ -1,6 +1,9 @@
 package org.alkemy.alkywallet.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +25,17 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
+    @NotBlank
     private String nombre;
 
+    @NotBlank
     private String apellido;
 
+    @Column(unique = true)
+    @Email
     private String email;
 
+    @NotBlank
     private String contrasenia;
 
     @Enumerated(EnumType.STRING)
