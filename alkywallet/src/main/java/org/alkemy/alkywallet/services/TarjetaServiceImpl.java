@@ -1,0 +1,76 @@
+package org.alkemy.alkywallet.services;
+
+import lombok.RequiredArgsConstructor;
+import org.alkemy.alkywallet.models.Tarjeta;
+import org.alkemy.alkywallet.repositories.TarjetaRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TarjetaServiceImpl implements CrudService<Tarjeta> {
+
+    private final TarjetaRepository tarjetaRepository;
+
+    @Override
+    public List<Tarjeta> obtenerTodos() {
+        return tarjetaRepository.findAll();
+    }
+
+    @Override
+    public List<Tarjeta> obtenerPorEstado() {
+        return tarjetaRepository.findAll()
+                .stream()
+                .filter(t -> t.getEstado().equals(true))
+                .toList();
+    }
+
+    @Override
+    public Tarjeta obtenerPorId(Long id) {
+
+        if (id == null) {
+            throw new IllegalArgumentException("El id de la tarjeta no puede ser nulo");
+        }
+
+        return tarjetaRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
+    }
+
+    @Override
+    public Tarjeta crear(Tarjeta tarjeta) {
+
+        //TODO: asociar al cuenta con la tarjeta
+
+        if(tarjeta == null) {
+            throw new IllegalArgumentException("Error en la creacion de la tarjeta");
+        }
+
+        Tarjeta newTarjeta = new Tarjeta();
+
+        newTarjeta.setNumeroTarjeta(tarjeta.getNumeroTarjeta());
+        newTarjeta.setCvv(tarjeta.getCvv());
+        newTarjeta.setNombreTitular(tarjeta.getNombreTitular());
+        newTarjeta.setBanco(tarjeta.getBanco());
+        newTarjeta.setTipo(tarjeta.getTipo());
+        newTarjeta.setTopeGasto(tarjeta.getTopeGasto());
+        newTarjeta.setCuenta(null);
+
+        return tarjetaRepository.save(newTarjeta);
+    }
+
+    @Override
+    public Tarjeta actualizar(Tarjeta tarjeta,Long id) {
+        return null;
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        Tarjeta tarjeta = tarjetaRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
+        tarjeta.setEstado(false);
+        tarjetaRepository.save(tarjeta);
+    }
+}
