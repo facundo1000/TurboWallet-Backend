@@ -1,11 +1,11 @@
 package org.alkemy.alkywallet.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,6 +20,7 @@ public class Tarjeta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @Column(name = "id_tarjeta")
     private Long idTarjeta;
 
     @Column(name = "numero_tarjeta")
@@ -43,9 +44,18 @@ public class Tarjeta {
 
     private Boolean estado;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cuenta")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @Transient
     private Cuenta cuenta;
+
+    @OneToMany
+    @JoinTable(
+            name = "tbl_tarjeta_transacciones",
+            joinColumns = @JoinColumn(name = "id_tarjeta"),
+            inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_tarjeta", "id_transaccion"})
+    )
+    private List<Transaccion> transaccions;
 
     @PrePersist
     private void init() {
