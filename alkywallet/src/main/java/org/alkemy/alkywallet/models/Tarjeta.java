@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
@@ -50,14 +51,20 @@ public class Tarjeta {
     private void init() {
         this.estado = true;
         this.fechaVencimiento = randomDate();
+        this.numeroTarjeta = generarNumeroTarjeta();
+        this.cvv = generarCVV();
     }
 
 
+    /**
+     * Funcion para generar una fecha aleatoria entre 2026 y 2050.
+     * @return LocalDate object
+     */
     private LocalDate randomDate() {
 
         // Fechas límite
-        LocalDate start = LocalDate.of(2000, 1, 1);
-        LocalDate end = LocalDate.of(2025, 12, 31);
+        LocalDate start = LocalDate.of(2026, 1, 1);
+        LocalDate end = LocalDate.of(2050, 12, 31);
 
         // Número de días entre las fechas
         long days = ChronoUnit.DAYS.between(start, end);
@@ -66,6 +73,32 @@ public class Tarjeta {
         long randomDays = ThreadLocalRandom.current().nextLong(days + 1);
 
         return start.plusDays(randomDays);
+    }
+
+
+    /**
+     * Funcion para generar un numero aleatorio de Tarjeta
+     * @return String object con el numero de tarjeta generado.
+     */
+    private String generarNumeroTarjeta() {
+        // Implementar lógica para generar número único de 16 dígitos
+        // Ejemplo básico:
+        Random random = new Random();
+        StringBuilder numero = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            numero.append(random.nextInt(10));
+        }
+        return numero.toString();
+    }
+
+    /**
+     * Funcion para generar CVV de forma aleatoria.
+     * @return String object con el CVV generado.
+     */
+    private String generarCVV() {
+        // Implementar lógica para generar CVV de 3 dígitos
+        Random random = new Random();
+        return String.format("%03d", random.nextInt(1000));
     }
 
 }

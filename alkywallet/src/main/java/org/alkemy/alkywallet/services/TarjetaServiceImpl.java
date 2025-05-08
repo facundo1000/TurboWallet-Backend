@@ -9,16 +9,16 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TarjetaServiceImpl implements CrudService<Tarjeta> {
+public class TarjetaServiceImpl {
 
     private final TarjetaRepository tarjetaRepository;
 
-    @Override
+
     public List<Tarjeta> obtenerTodos() {
         return tarjetaRepository.findAll();
     }
 
-    @Override
+
     public List<Tarjeta> obtenerPorEstado() {
         return tarjetaRepository.findAll()
                 .stream()
@@ -26,7 +26,7 @@ public class TarjetaServiceImpl implements CrudService<Tarjeta> {
                 .toList();
     }
 
-    @Override
+
     public Tarjeta obtenerPorId(Long id) {
 
         if (id == null) {
@@ -38,7 +38,7 @@ public class TarjetaServiceImpl implements CrudService<Tarjeta> {
                 .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
     }
 
-    @Override
+
     public Tarjeta crear(Tarjeta tarjeta) {
 
         //TODO: asociar al cuenta con la tarjeta
@@ -49,8 +49,6 @@ public class TarjetaServiceImpl implements CrudService<Tarjeta> {
 
         Tarjeta newTarjeta = new Tarjeta();
 
-        newTarjeta.setNumeroTarjeta(tarjeta.getNumeroTarjeta());
-        newTarjeta.setCvv(tarjeta.getCvv());
         newTarjeta.setNombreTitular(tarjeta.getNombreTitular());
         newTarjeta.setBanco(tarjeta.getBanco());
         newTarjeta.setTipo(tarjeta.getTipo());
@@ -60,12 +58,28 @@ public class TarjetaServiceImpl implements CrudService<Tarjeta> {
         return tarjetaRepository.save(newTarjeta);
     }
 
-    @Override
+
     public Tarjeta actualizar(Tarjeta tarjeta,Long id) {
-        return null;
+
+        //TODO: asociar al cuenta con la tarjeta
+
+        Tarjeta tarjetaActualizada = tarjetaRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
+
+        if(tarjeta == null){
+            throw new IllegalArgumentException("Error en la actualizacion de la tarjeta");
+        }
+
+        tarjetaActualizada.setNombreTitular(tarjeta.getNombreTitular());
+        tarjetaActualizada.setBanco(tarjeta.getBanco());
+        tarjetaActualizada.setTipo(tarjeta.getTipo());
+        tarjetaActualizada.setTopeGasto(tarjeta.getTopeGasto());
+
+        return tarjetaRepository.save(tarjetaActualizada);
     }
 
-    @Override
+
     public void eliminar(Long id) {
         Tarjeta tarjeta = tarjetaRepository
                 .findById(id)
