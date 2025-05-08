@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * Security configuration class
  * <br>
- * Autor: Squad2
+ * Autor:Squad2
  */
 
 @Configuration
@@ -22,6 +22,7 @@ public class SecurityConfig {
 
     /**
      * Security filter chain configuration
+     *
      * @param http
      * @return HttpSecurity object
      * @throws Exception
@@ -33,9 +34,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.anyRequest().permitAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
                 .httpBasic(Customizer.withDefaults())
+                //no se usará sesión HTTP
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //permite el uso de iframes. Necesario para el uso de H2.
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .build();
     }
