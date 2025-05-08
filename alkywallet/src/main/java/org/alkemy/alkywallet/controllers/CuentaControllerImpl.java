@@ -2,7 +2,6 @@ package org.alkemy.alkywallet.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Cuenta;
-import org.alkemy.alkywallet.services.CrudService;
 import org.alkemy.alkywallet.services.CuentaServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
