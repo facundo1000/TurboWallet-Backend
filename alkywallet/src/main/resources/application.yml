@@ -17,8 +17,12 @@ spring:
   jpa:
     defer-datasource-initialization: true # permite tomar un archivo sql para cargar datos en tablas
 
+  security:
+    user:
+      password: as
 
 #Logs para bases de datos
 logging:
   level:
-    sql: debug #
+    sql: debug
+
