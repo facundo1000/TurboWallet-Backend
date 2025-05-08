@@ -21,9 +21,9 @@ public class UsuarioControllerImpl {
         return new ResponseEntity<>(usuarioService.obtenerTodosUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping("/estado")
-    public ResponseEntity<List<Usuario>> obtenerUsuariosPorEstado(@RequestParam Boolean estado) {
-        return new ResponseEntity<>(usuarioService.obtenerUsuariosPorEstado(estado), HttpStatus.OK);
+    @GetMapping("/activos")
+    public ResponseEntity<List<Usuario>> obtenerUsuariosPorEstado() {
+        return new ResponseEntity<>(usuarioService.obtenerUsuariosActivos(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
