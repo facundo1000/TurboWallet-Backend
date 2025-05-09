@@ -47,7 +47,6 @@ public class UsuarioServiceImpl {
         newUsuario.setEmail(usuario.getEmail());
         newUsuario.setContrasenia(usuario.getContrasenia());
         newUsuario.setRol(usuario.getRol());
-        newUsuario.setEstado(true);
         newUsuario.setFechaActualizacion(LocalDateTime.now());
 
         usuarioRepository.save(newUsuario);
