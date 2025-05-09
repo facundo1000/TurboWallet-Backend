@@ -31,18 +31,18 @@ public class CuentaControllerImpl {
         return new ResponseEntity<>(cuentaService.obtenerPorId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<Cuenta> crearCuenta(@RequestBody Cuenta cuenta) {
-        return new ResponseEntity<>(cuentaService.crear(cuenta), HttpStatus.CREATED);
+    @PostMapping("/crear/{idUsuario}")
+    public ResponseEntity<Cuenta> crearCuenta(@PathVariable Long idUsuario) {
+        return new ResponseEntity<>(cuentaService.crearCuentApartirDeUsuario(idUsuario), HttpStatus.CREATED);
     }
 
-    /**TODO: hacer el servicio PRIMERO
-     @PutMapping("/actualizar/{id}")
+    // TODO: hacer el servicio PRIMERO
+    //@PutMapping("/actualizar/{id}")
+    /**
      public ResponseEntity<Cuenta> actualizarCuentaPorId(@PathVariable Long id, @RequestBody Cuenta cuenta) {
-     return new ResponseEntity<>(cuentaService.actualizar(cuenta), HttpStatus.OK);
+     return new ResponseEntity<>(cuentaService.actualizar(cuenta,id), HttpStatus.OK);
      }
      */
-
 
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarCuentaPorId(@PathVariable Long id) {

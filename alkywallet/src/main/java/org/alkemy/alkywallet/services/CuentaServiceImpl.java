@@ -2,7 +2,9 @@ package org.alkemy.alkywallet.services;
 
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Cuenta;
+import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
+import org.alkemy.alkywallet.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -13,6 +15,8 @@ import java.util.List;
 public class CuentaServiceImpl {
 
     private final CuentaRepository cuentaRepository;
+
+    private final UsuarioRepository usuarioRepository;
 
 
     public List<Cuenta> obtenerTodos() {
@@ -32,7 +36,23 @@ public class CuentaServiceImpl {
     }
 
 
-    public Cuenta crear(Cuenta cuenta) {
+    public Cuenta crearCuentApartirDeUsuario(Long idUsuario) {
+
+        Usuario usuarioExistente = usuarioRepository
+                .findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + idUsuario + " no existe"));
+
+        Cuenta newCuenta = new Cuenta();
+
+        newCuenta.setUsuario(usuarioExistente);
+
+        newCuenta.setTarjetas(new HashSet<>());
+
+        return cuentaRepository.save(newCuenta);
+    }
+
+    //TODO: Resolver si existe caso de uso valido para este metodo
+    public Cuenta crearSinUsuario(Cuenta cuenta) {
 
         if (cuenta == null) {
             throw new IllegalArgumentException("La cuenta no puede ser nula");
@@ -43,16 +63,24 @@ public class CuentaServiceImpl {
         newCuenta.setCbu(cuenta.getCbu());
         newCuenta.setSaldo(cuenta.getSaldo());
 
-        newCuenta.setUsuario(null); //TODO: Resolver como toma al usuario que crea la cuenta
+        newCuenta.setUsuario(null);
 
         newCuenta.setTarjetas(new HashSet<>());
 
         return cuentaRepository.save(newCuenta);
     }
 
-    //TODO: hacer el "actualizar"
+    //TODO: hacer el "actualizar". Analizar en que casos de uso corresponde.
+    public Cuenta actualizar(Cuenta cuenta, Long idCuenta) {
 
-    public Cuenta actualizar(Cuenta cuenta) {
+        Cuenta cuentaRegistrada = cuentaRepository
+                .findById(idCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + idCuenta + " no existe"));
+
+        if (cuenta == null) {
+            throw new IllegalArgumentException("Error en la actualizacion de la cuenta");
+        }
+
         return null;
     }
 
