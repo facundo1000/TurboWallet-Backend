@@ -66,6 +66,47 @@ public class Cuenta {
     private void init() {
         this.estado = true;
         this.fechaApertura = LocalDateTime.now();
+        this.cbu = generarCBU();
+        this.saldo = "0.00";
     }
+
+    /**
+     * Funcion para generar CBU de manera automatica
+     * El CBU son 22 numeros compuestos de 5 segmentos que representan
+     * <br>
+     * entidad - sucursal - ID cuenta - DV2
+     * <br>
+     * <a href="https://www.bcra.gob.ar/mediospago/Clave-Bancaria-Uniforme.asp">Documentacion sobre CBU</a>
+     *
+     * @return String object
+     */
+    private String generarCBU() {
+        StringBuilder cbu = new StringBuilder();
+        java.util.Random random = new java.util.Random();
+
+        // Entidad bancaria (3 dígitos)
+        for (int i = 0; i < 3; i++) {
+            cbu.append(random.nextInt(10));
+        }
+
+        // Sucursal (4 dígitos)
+        for (int i = 0; i < 4; i++) {
+            cbu.append(random.nextInt(10));
+        }
+
+        // Dígito verificador 1 (1 dígito)
+        cbu.append(random.nextInt(10));
+
+        // Número de cuenta (13 dígitos)
+        for (int i = 0; i < 13; i++) {
+            cbu.append(random.nextInt(10));
+        }
+
+        // Dígito verificador 2 (1 dígito)
+        cbu.append(random.nextInt(10));
+
+        return cbu.toString();
+    }
+
 
 }
