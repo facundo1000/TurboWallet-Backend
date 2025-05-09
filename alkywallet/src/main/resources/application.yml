@@ -24,6 +24,13 @@ spring:
       user:
         generator: ${USER_GENERATOR}
 
+# OpenApi Configuration
+springdoc:
+  api-docs:
+    path: /openapi/api-docs
+  swagger-ui:
+    path: /openapi/swagger
+
 #Logs para bases de datos
 logging:
   level:

@@ -32,17 +32,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtUtils jwtUtils;
+
     /**
      * Security filter chain configuration
-     *
      * @param http
      * @return HttpSecurity object
      * @throws Exception
      */
-
-    private final JwtUtils jwtUtils;
-
-
     //TODO: mejorar los permisos de seguridad
 
     @Bean
@@ -50,10 +47,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth ->
 
-                        auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v1/cuentas/**").hasRole("ADMIN")
+                        auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**","/openapi/**").permitAll()
+                                .requestMatchers("/api/v1/cuentas/**","/api/v1/tarjetas/**").hasRole("ADMIN")
+                                .requestMatchers("/api/v1/usuarios/activos","/api/v1/tarjetas/activas").hasRole("USER")
                                 .anyRequest()
-                                .denyAll()
+                                .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
                 .httpBasic(Customizer.withDefaults())
