@@ -7,6 +7,7 @@ import lombok.*;
 import org.alkemy.alkywallet.utils.Rol;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,7 +37,7 @@ public class Usuario {
     private String contrasenia;
 
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private List<Rol> rol;
 
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro;
