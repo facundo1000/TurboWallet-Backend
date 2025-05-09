@@ -88,6 +88,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
 
+    //TODO: terminar de configurar el registro
     public AuthResponse registerUser(AuthCreateRequest registerRequest) {
         String email = registerRequest.email();
         String password = registerRequest.password();

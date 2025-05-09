@@ -37,10 +37,10 @@ public class JwtUtils {
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withClaim("authorities", authorities)
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
+                .withIssuedAt(new Date()) //Cuando se genera
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000)) //Cuando expira
                 .withJWTId(UUID.randomUUID().toString())
-                .withNotBefore(new Date(System.currentTimeMillis()))
+                .withNotBefore(new Date(System.currentTimeMillis())) // desde cuando el token es valido
                 .sign(algorithm);
     }
 

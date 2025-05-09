@@ -36,30 +36,27 @@ public class SecurityConfig {
 
     /**
      * Security filter chain configuration
+     *
      * @param http
      * @return HttpSecurity object
      * @throws Exception
      */
     //TODO: mejorar los permisos de seguridad
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth ->
 
-                        auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**","/openapi/**").permitAll()
-                                .requestMatchers("/api/v1/cuentas/**","/api/v1/tarjetas/**").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/usuarios/activos","/api/v1/tarjetas/activas").hasRole("USER")
-                                .anyRequest()
-                                .authenticated()
+                        auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**", "/openapi/**").permitAll()
+                                .requestMatchers("/api/v1/cuentas/**", "/api/v1/tarjetas/**", "/api/v1/usuarios/**").hasRole("ADMIN")
+                                .requestMatchers("/api/v1/usuarios/activos", "/api/v1/tarjetas/activas").hasRole("USER")
                 )
                 .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
-                //no se usará sesión HTTP
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //permite el uso de iframes. Necesario para el uso de H2.
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .formLogin(AbstractHttpConfigurer::disable)
                 .build();
     }
 
