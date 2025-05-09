@@ -59,9 +59,9 @@ public class TarjetaControllerImpl {
      * @return ResponseEntity con la tarjeta creada o HttpStatus.BAD_REQUEST si se proporcionaron datos erroneos
      */
 
-    @PostMapping("/crear")
-    public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody Tarjeta tarjeta) {
-        return new ResponseEntity<>(tarjetaService.crear(tarjeta), HttpStatus.CREATED);
+    @PostMapping("/crear/{idCuenta}")
+    public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody Tarjeta tarjeta, @PathVariable Long idCuenta) {
+        return new ResponseEntity<>(tarjetaService.crear(tarjeta, idCuenta), HttpStatus.CREATED);
     }
 
     /**
