@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
                 contact = @Contact(
                         name = "Escuadron404",
                         email = "roberto@gmail.com",
-                        url = "https://google.com"
+                        url = "https://youtu.be/hSR-dX-om-c?si=HbYpnVhD8YsZe1fa&t=110"
                 ),
                 license = @License(
                         name = "MIT License",

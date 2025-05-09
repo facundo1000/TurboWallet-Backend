@@ -1,13 +1,10 @@
 package org.alkemy.alkywallet.controllers;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.services.UsuarioServiceImpl;
+import org.alkemy.alkywallet.swagger.find.ApiResponseObtenerUsuario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +19,7 @@ public class UsuarioControllerImpl {
 
     private final UsuarioServiceImpl usuarioService;
 
-    @Operation(summary = "Metodo que retorna una lista de todos los usuarios")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"
-                    , content = {
-                    @Content(mediaType = "text/plain")
-            }),
-            @ApiResponse(responseCode = "401", description = "Forbidden"
-                    , content = {
-                    @Content(mediaType = "text/plain")
-            })
-    })
+    @ApiResponseObtenerUsuario
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerTodosUsuarios() {
         return new ResponseEntity<>(usuarioService.obtenerTodosUsuarios(), HttpStatus.OK);
