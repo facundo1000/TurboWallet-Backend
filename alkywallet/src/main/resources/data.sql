@@ -1,6 +1,6 @@
 INSERT INTO usuarios (nombre, apellido, email,contrasenia, rol,fecha_registro ,fecha_actualizacion, estado) VALUES
-('Juan', 'Pérez', 'juan.perez@example.com', '1234','ADMIN', '2025-04-30','2025-05-03' ,true),
-('Ana', 'López', 'ana.lopez@example.com','abcd', 'USER', '2025-04-30', '2025-05-03',true);
+('Juan', 'Pérez', 'juan.perez@example.com', '$2a$16$RdESrVgQzi8kaRxER4cto.84Bj88C.7gP9Mp66QblmE5rvIBDbi..','ADMIN', '2025-04-30','2025-05-03' ,true),
+('Ana', 'López', 'ana.lopez@example.com','$2a$16$leuv5tw8Snm522Awl1cTf.lNz0d0tA4F3OwG64ktqSXPFkL5Femum', 'USER', '2025-04-30', '2025-05-03',true);
 
 INSERT INTO cuentas (cbu, saldo, fecha_apertura, estado) VALUES
 ('1059127711100063105336',1500000.00, '2023-01-15', true),

@@ -18,8 +18,11 @@ spring:
     defer-datasource-initialization: true # permite tomar un archivo sql para cargar datos en tablas
 
   security:
-    user:
-      password: as
+    jwt:
+      key:
+        private: ${SECRET_KEY}
+      user:
+        generator: ${USER_GENERATOR}
 
 #Logs para bases de datos
 logging:
