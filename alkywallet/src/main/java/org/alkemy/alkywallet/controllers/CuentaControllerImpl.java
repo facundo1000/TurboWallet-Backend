@@ -44,7 +44,7 @@ public class CuentaControllerImpl {
      }
      */
 
-    @DeleteMapping("/eliminar/{id}")
+    @PatchMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarCuentaPorId(@PathVariable Long id) {
         cuentaService.eliminar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

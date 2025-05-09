@@ -42,7 +42,7 @@ public class UsuarioControllerImpl {
         return new ResponseEntity<>(usuarioService.actualizarUsuarioPorId(id, usuario), HttpStatus.OK);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @PatchMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarUsuarioPorId(@PathVariable Long id) {
         usuarioService.eliminarUsuarioPorId(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
