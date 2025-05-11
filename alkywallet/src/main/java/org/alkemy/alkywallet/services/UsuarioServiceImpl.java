@@ -36,23 +36,23 @@ public class UsuarioServiceImpl {
                 .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + id + " no existe"));
     }
 
-    public void crearUsuario(Usuario usuario) {
-
-        Usuario newUsuario = new Usuario();
-
-        if (usuario == null) {
-            throw new IllegalArgumentException("El usuario no puede ser nulo");
-        }
-
-        newUsuario.setNombre(usuario.getNombre());
-        newUsuario.setApellido(usuario.getApellido());
-        newUsuario.setEmail(usuario.getEmail());
-        newUsuario.setContrasenia(usuario.getContrasenia());
-        newUsuario.setRoles(null);
-        newUsuario.setFechaActualizacion(LocalDateTime.now());
-
-        usuarioRepository.save(newUsuario);
-    }
+//    public void crearUsuario(Usuario usuario) {
+//
+//        Usuario newUsuario = new Usuario();
+//
+//        if (usuario == null) {
+//            throw new IllegalArgumentException("El usuario no puede ser nulo");
+//        }
+//
+//        newUsuario.setNombre(usuario.getNombre());
+//        newUsuario.setApellido(usuario.getApellido());
+//        newUsuario.setEmail(usuario.getEmail());
+//        newUsuario.setContrasenia(usuario.getContrasenia());
+//        newUsuario.setRoles(null);
+//        newUsuario.setFechaActualizacion(LocalDateTime.now());
+//
+//        usuarioRepository.save(newUsuario);
+//    }
 
     public Usuario actualizarUsuarioPorId(Long id, Usuario usuario) {
 

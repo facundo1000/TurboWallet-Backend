@@ -2,6 +2,7 @@ package org.alkemy.alkywallet.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.alkemy.alkywallet.utils.RoleEnum;
 
 @Getter
 @Setter
@@ -16,6 +17,10 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
     private Long idRol;
-    private String nombre;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol_nombre")
+    private RoleEnum role;
 
 }

@@ -44,7 +44,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 
         usuarioExistente.getRoles()
-                .forEach(roles -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(roles.getNombre().toUpperCase()))));
+                .forEach(roles -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(roles.getRole().name()))));
 
         return new User(
                 usuarioExistente.getEmail(),

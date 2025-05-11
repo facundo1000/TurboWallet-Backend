@@ -2,9 +2,9 @@ INSERT INTO usuarios (nombre, apellido, email,contrasenia,fecha_registro ,fecha_
 ('Juan', 'Pérez', 'juan.perez@example.com', '$2a$16$RdESrVgQzi8kaRxER4cto.84Bj88C.7gP9Mp66QblmE5rvIBDbi..', '2025-04-30','2025-05-03' ,true),
 ('Ana', 'López', 'ana.lopez@example.com','$2a$16$leuv5tw8Snm522Awl1cTf.lNz0d0tA4F3OwG64ktqSXPFkL5Femum', '2025-04-30', '2025-05-03',true);
 
-INSERT INTO roles (id_rol,nombre) VALUES (1,'ADMIN');
-INSERT INTO roles (id_rol,nombre) VALUES (2,'USER');
-INSERT INTO roles (id_rol,nombre) VALUES (3,'INVITED');
+INSERT INTO roles (id_rol,rol_nombre) VALUES (1,'ADMIN');
+INSERT INTO roles (id_rol,rol_nombre) VALUES (2,'USER');
+INSERT INTO roles (id_rol,rol_nombre) VALUES (3,'INVITED');
 
 INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (1,1);
 INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (1,2);
