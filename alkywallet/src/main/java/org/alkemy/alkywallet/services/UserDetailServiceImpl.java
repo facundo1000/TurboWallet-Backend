@@ -7,7 +7,6 @@ import org.alkemy.alkywallet.controllers.dto.AuthResponse;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
 import org.alkemy.alkywallet.utils.JwtUtils;
-import org.alkemy.alkywallet.utils.Rol;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -39,15 +37,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Usuario usuarioExistente = repository
-                .findUsuarioByEmail(username)
+                .findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("El usuario con el email: " + username + " no existe"));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
 
-        usuarioExistente
-                .getRol()
-                .forEach(rol -> authorities.add(new SimpleGrantedAuthority("ROLE_" + rol.name().toUpperCase())));
+        usuarioExistente.getRoles()
+                .forEach(roles -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(roles.getNombre().toUpperCase()))));
 
         return new User(
                 usuarioExistente.getEmail(),
@@ -92,30 +89,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public AuthResponse registerUser(AuthCreateRequest registerRequest) {
         String email = registerRequest.email();
         String password = registerRequest.password();
-        List<String> roles = registerRequest.roleRequest().roleListName();
+        List<String> roles = registerRequest.roleRequest().roleListName().stream().toList();
 
-
-        //FIXME: se rompe en el parseo
-        //TODO: Tabla de Roles (CRUD) para hacer la comparacion
-        List<Rol> rolList = roles.stream()
-                .map(r -> Rol.valueOf(r.toUpperCase()))
-                .toList();
-
+        //FIXME: registro de usuario
 
         Usuario usuario = Usuario.builder()
                 .nombre(registerRequest.nombre())
                 .apellido(registerRequest.apellido())
                 .email(email)
                 .contrasenia(password)
-                .rol(rolList)
+//                .roles(rolList)
                 .build();
 
         Usuario usuarioCreado = repository.save(usuario);
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
-        usuarioCreado.getRol()
-                .forEach(rol -> authorityList.add(new SimpleGrantedAuthority("ROLE_" + rol.name().toUpperCase())));
+//        usuarioCreado.getRol()
+//                .forEach(rol -> authorityList.add(new SimpleGrantedAuthority("ROLE_" + rol.name().toUpperCase())));
 
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, authorityList);
