@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.alkemy.alkywallet.utils.Rol;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +23,7 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    @NotBlank
+    @NotBlank(message = "Error. Coloque un nombre de usuario")
     private String nombre;
 
     @NotBlank
@@ -36,8 +36,14 @@ public class Usuario {
     @NotBlank
     private String contrasenia;
 
-    @Enumerated(EnumType.STRING)
-    private List<Rol> rol;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "tbl_usuario_roles",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_usuario", "id_rol"})
+    )
+    private Set<Rol> roles = new HashSet<>();
 
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro;

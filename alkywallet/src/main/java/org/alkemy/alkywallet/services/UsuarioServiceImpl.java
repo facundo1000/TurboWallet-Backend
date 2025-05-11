@@ -6,7 +6,9 @@ import org.alkemy.alkywallet.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +48,7 @@ public class UsuarioServiceImpl {
         newUsuario.setApellido(usuario.getApellido());
         newUsuario.setEmail(usuario.getEmail());
         newUsuario.setContrasenia(usuario.getContrasenia());
-        newUsuario.setRol(usuario.getRol());
+        newUsuario.setRoles(null);
         newUsuario.setFechaActualizacion(LocalDateTime.now());
 
         usuarioRepository.save(newUsuario);
@@ -75,8 +77,8 @@ public class UsuarioServiceImpl {
                 (usuario.getContrasenia() != null) ? usuario.getContrasenia() : usuarioActualizado.getContrasenia()
         );
 
-        usuarioActualizado.setRol(
-                (usuario.getRol() != null) ? usuario.getRol() : usuarioActualizado.getRol()
+        usuarioActualizado.setRoles(
+                usuario.getRoles() != null ? usuario.getRoles() : usuarioActualizado.getRoles()
         );
 
         usuarioActualizado.setEstado(
