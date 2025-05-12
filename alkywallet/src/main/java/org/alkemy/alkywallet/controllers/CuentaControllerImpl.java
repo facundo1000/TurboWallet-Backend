@@ -1,5 +1,6 @@
 package org.alkemy.alkywallet.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.services.CuentaServiceImpl;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/cuentas")
+@Tag(name = "CuentaController", description = "controlador de cuentas del sistema")
 public class CuentaControllerImpl {
 
     private final CuentaServiceImpl cuentaService;

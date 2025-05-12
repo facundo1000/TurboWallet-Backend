@@ -1,5 +1,6 @@
 package org.alkemy.alkywallet.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Tarjeta;
 import org.alkemy.alkywallet.services.TarjetaServiceImpl;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/tarjetas")
 @RequiredArgsConstructor
+@Tag(name = "TarjetaController", description = "Controlador Rest para la entidad Tarjeta")
 public class TarjetaControllerImpl {
 
     private final TarjetaServiceImpl tarjetaService;

@@ -1,5 +1,6 @@
 package org.alkemy.alkywallet.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class Usuario {
     private String email;
 
     @NotBlank
+    @JsonIgnore
     private String contrasenia;
 
     @ManyToMany(cascade = CascadeType.ALL)

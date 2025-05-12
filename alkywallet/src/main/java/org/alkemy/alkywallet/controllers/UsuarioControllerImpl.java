@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.services.UsuarioServiceImpl;
-import org.alkemy.alkywallet.swagger.find.ApiResponseObtenerUsuario;
+import org.alkemy.alkywallet.swagger.find.ApiResponseObtenerUsuarios;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class UsuarioControllerImpl {
 
     private final UsuarioServiceImpl usuarioService;
 
-    @ApiResponseObtenerUsuario
+    @ApiResponseObtenerUsuarios
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerTodosUsuarios() {
         return new ResponseEntity<>(usuarioService.obtenerTodosUsuarios(), HttpStatus.OK);
