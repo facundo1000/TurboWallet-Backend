@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.controllers.dto.AuthCreateRequest;
 import org.alkemy.alkywallet.controllers.dto.AuthLoginRequest;
 import org.alkemy.alkywallet.controllers.dto.AuthResponse;
+import org.alkemy.alkywallet.models.Rol;
 import org.alkemy.alkywallet.models.Usuario;
+import org.alkemy.alkywallet.repositories.RoleRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
 import org.alkemy.alkywallet.utils.JwtUtils;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +36,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final JwtUtils jwtUtils;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -85,31 +91,33 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
 
-    //TODO: terminar de configurar el registro
     public AuthResponse registerUser(AuthCreateRequest registerRequest) {
         String email = registerRequest.email();
         String password = registerRequest.password();
-        List<String> roles = registerRequest.roleRequest().roleListName().stream().toList();
+        List<String> roles = registerRequest.roleRequest().roleListName();
 
-        //FIXME: registro de usuario
+        Set<Rol> roleSet = new HashSet<>(roleRepository.findRolesByRoleIn(roles));
+
+        if (roleSet.isEmpty()) {
+            throw new BadCredentialsException("Invalid roles");
+        }
 
         Usuario usuario = Usuario.builder()
                 .nombre(registerRequest.nombre())
                 .apellido(registerRequest.apellido())
                 .email(email)
-                .contrasenia(password)
-//                .roles(rolList)
+                .contrasenia(passwordEncoder.encode(password))
+                .roles(roleSet)
                 .build();
 
         Usuario usuarioCreado = repository.save(usuario);
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
-//        usuarioCreado.getRol()
-//                .forEach(rol -> authorityList.add(new SimpleGrantedAuthority("ROLE_" + rol.name().toUpperCase())));
+        usuarioCreado.getRoles()
+                .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.getRole().name())));
 
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password, authorityList);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getContrasenia(), authorityList);
 
         String token = jwtUtils.createToken(authentication);
 

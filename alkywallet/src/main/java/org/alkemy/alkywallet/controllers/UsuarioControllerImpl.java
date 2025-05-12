@@ -35,19 +35,6 @@ public class UsuarioControllerImpl {
         return new ResponseEntity<>(usuarioService.obtenerUsuarioPorId(id), HttpStatus.OK);
     }
 
-//    @PostMapping("/crear")
-//    public ResponseEntity<?> crearUsuario(@RequestBody @Valid Usuario usuario, BindingResult result) {
-//
-//        if (result.hasErrors()) {
-//            List<Map<String, String>> list = result.getAllErrors().stream().map(error -> {
-//                return Map.of("field", Objects.requireNonNull(error.getCode()), "message", error.getDefaultMessage());
-//            }).toList();
-//            return new ResponseEntity<>(list, HttpStatus.BAD_REQUEST);
-//        }
-//
-//        usuarioService.crearUsuario(usuario);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<Usuario> actualizarUsuarioPorId(@PathVariable Long id, @RequestBody Usuario usuario) {
