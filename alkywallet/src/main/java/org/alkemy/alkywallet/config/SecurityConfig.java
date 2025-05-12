@@ -5,7 +5,6 @@ import org.alkemy.alkywallet.config.filters.JwtTokenValidator;
 import org.alkemy.alkywallet.utils.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,15 +41,15 @@ public class SecurityConfig {
      * @return HttpSecurity object
      * @throws Exception
      */
-    //TODO: mejorar los permisos de seguridad
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth ->
 
                         auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**", "/openapi/**").permitAll()
-                                .requestMatchers("/api/v1/cuentas/**", "/api/v1/tarjetas/**", "/api/v1/usuarios/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT,"/api/v1/usuarios/activos", "/api/v1/tarjetas/activas").hasRole("USER")
+                                .anyRequest()
+                                .authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
                 .httpBasic(Customizer.withDefaults())
