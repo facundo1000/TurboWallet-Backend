@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -51,14 +50,34 @@ public class Cuenta {
     @JsonIgnore
     Set<Tarjeta> tarjetas = new HashSet<>();
 
+
     @OneToMany
     @JoinTable(
-            name = "tbl_cuenta_transaccion",
+            name = "tbl_cuenta_deposito",
             joinColumns = @JoinColumn(name = "id_cuenta"),
             inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"id_cuenta", "id_transaccion"})
     )
-    private List<Transaccion> transaccion;
+    private Set<Deposito> deposito;
+
+
+    @OneToMany
+    @JoinTable(
+            name = "tbl_cuenta_transferencia",
+            joinColumns = @JoinColumn(name = "id_cuenta"),
+            inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_cuenta", "id_transaccion"})
+    )
+    private Set<Transferencia> transferencia;
+
+    @OneToMany
+    @JoinTable(
+            name = "tbl_cuenta_almacenamiento",
+            joinColumns = @JoinColumn(name = "id_cuenta"),
+            inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_cuenta", "id_transaccion"})
+    )
+    private Set<AlmacenamientoSaldo> almacenamientoSaldo;
 
     private Boolean estado;
 

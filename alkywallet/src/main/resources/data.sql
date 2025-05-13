@@ -38,14 +38,35 @@ INSERT INTO tbl_cuenta_tarjeta(id_cuenta,id_tarjeta) VALUES (1,3);
 INSERT INTO tbl_cuenta_tarjeta(id_cuenta,id_tarjeta) VALUES (2,4);
 INSERT INTO tbl_cuenta_tarjeta(id_cuenta,id_tarjeta) VALUES (1,5);
 
-INSERT INTO transacciones (monto,fecha,medio_de_pago,estado)VALUES ('1000000','2025-06-09T12:03:56','transferencia',true);
-INSERT INTO transacciones (monto,fecha,medio_de_pago,estado)VALUES ('156897','2025-06-10T12:03:56','transferencia',true);
-INSERT INTO transacciones (monto,fecha,medio_de_pago,estado)VALUES ('250000','2025-11-18T12:03:56','tarjeta',true);
-INSERT INTO transacciones (monto,fecha,medio_de_pago,estado)VALUES ('558960','2025-09-27T12:03:56','tarjeta',true);
+-- DEPOSITOS
+INSERT INTO deposito (monto,fecha,medio_de_pago,estado,canal, origen_de_fondos,id_externo)
+VALUES ('1000000','2025-06-09T12:03:56','efectivo',true,'rapipago','rapipago',UUID());
 
+INSERT INTO deposito (monto,fecha,medio_de_pago,estado,canal, origen_de_fondos,id_externo)
+VALUES ('156897','2025-06-09T12:03:56','efectivo',true,'pagofacil','pagofacil',UUID());
 
-INSERT INTO tbl_cuenta_transaccion (id_cuenta,id_transaccion)VALUES (1,1);
-INSERT INTO tbl_cuenta_transaccion (id_cuenta,id_transaccion)VALUES (2,2);
+--TABLA INTERMEDIA CUENTA-DEPOSITO
+INSERT INTO tbl_cuenta_deposito (id_cuenta, id_transaccion) VALUES (1,1);
+INSERT INTO tbl_cuenta_deposito (id_cuenta, id_transaccion) VALUES (1,2);
 
-INSERT INTO tbl_tarjeta_transacciones(id_tarjeta,id_transaccion)VALUES (1,3);
-INSERT INTO tbl_tarjeta_transacciones(id_tarjeta,id_transaccion)VALUES (2,4);
+--TRANSFERENCIAS
+INSERT INTO transferencia (monto,fecha,medio_de_pago,estado,tipo_transferencia,motivo,nombre_destinatario,banco_destino,cuenta_destinatario,cuenta_origen)
+VALUES ('250000','2025-06-25T10:33:56','transferencia',true,'debito','pago de alquiler','alberto paniagua','BancoDos','trabajar esto','trabajar esto');
+
+INSERT INTO transferencia (monto,fecha,medio_de_pago,estado,tipo_transferencia,motivo,nombre_destinatario,banco_destino,cuenta_destinatario,cuenta_origen)
+VALUES ('50000','2025-06-10T10:30:56','transferencia',true,'debito','varios','Totec.S.A','BancoTres','trabajar esto','trabajar esto');
+
+-- TABLA INTERMEDIA CUENTA-TRANSFERENCIA
+INSERT INTO tbl_cuenta_transferencia (id_cuenta, id_transaccion) VALUES (1,1);
+INSERT INTO tbl_cuenta_transferencia (id_cuenta, id_transaccion) VALUES (1,2);
+
+-- ALMACENAMIENTO DE SALDO
+INSERT INTO almacenamiento_saldo (monto,fecha,medio_de_pago,estado,codigo_referencia,comision_aplicada)
+VALUES ('558960','2025-09-27T12:03:56','pago a cuenta',true,UUID(),1.20);
+
+INSERT INTO almacenamiento_saldo (monto,fecha,medio_de_pago,estado,codigo_referencia,comision_aplicada)
+VALUES ('25000','2025-09-27T12:03:56','pago a cuenta',true,UUID(),1.15);
+
+-- TABLA INTERMEDIA CUENTA-ALMACENAMIENTO_SALDO
+INSERT INTO tbl_cuenta_almacenamiento (id_cuenta, id_transaccion) VALUES (1,1);
+INSERT INTO tbl_cuenta_almacenamiento (id_cuenta, id_transaccion) VALUES (1,2);

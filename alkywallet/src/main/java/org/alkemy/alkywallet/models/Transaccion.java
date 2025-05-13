@@ -8,15 +8,14 @@ import java.time.LocalDateTime;
 /**
  * Transaccion model
  * <br>
- * Autor: Squad2
+ * @author: Escuadron404
  */
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "transacciones")
+@MappedSuperclass
 public class Transaccion {
 
     @Id
@@ -33,21 +32,4 @@ public class Transaccion {
     private String medioDePago;
 
     private Boolean estado;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @Transient
-    private Cuenta cuenta;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @Transient
-    private Tarjeta tarjeta;
-
-    /**
-     * Funcion para inicializar las variables de la clase Transaccion
-     */
-    @PrePersist
-    private void init(){
-        this.estado = true;
-        this.fecha = LocalDateTime.now();
-    }
 }

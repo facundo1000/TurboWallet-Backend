@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
@@ -48,14 +48,8 @@ public class Tarjeta {
     @Transient
     private Cuenta cuenta;
 
-    @OneToMany
-    @JoinTable(
-            name = "tbl_tarjeta_transacciones",
-            joinColumns = @JoinColumn(name = "id_tarjeta"),
-            inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"id_tarjeta", "id_transaccion"})
-    )
-    private List<Transaccion> transaccions;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Transferencia> transferencias;
 
     @PrePersist
     private void init() {
@@ -68,6 +62,7 @@ public class Tarjeta {
 
     /**
      * Funcion para generar una fecha aleatoria entre 2026 y 2050.
+     *
      * @return LocalDate object
      */
     private LocalDate randomDate() {
@@ -88,6 +83,7 @@ public class Tarjeta {
 
     /**
      * Funcion para generar un numero aleatorio de Tarjeta
+     *
      * @return String object con el numero de tarjeta generado.
      */
     private String generarNumeroTarjeta() {
@@ -103,6 +99,7 @@ public class Tarjeta {
 
     /**
      * Funcion para generar CVV de forma aleatoria.
+     *
      * @return String object con el CVV generado.
      */
     private String generarCVV() {
