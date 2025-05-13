@@ -40,10 +40,11 @@ public class CuentaControllerImpl {
 
     // TODO: hacer el servicio PRIMERO
     //@PutMapping("/actualizar/{id}")
+
     /**
-     public ResponseEntity<Cuenta> actualizarCuentaPorId(@PathVariable Long id, @RequestBody Cuenta cuenta) {
-     return new ResponseEntity<>(cuentaService.actualizar(cuenta,id), HttpStatus.OK);
-     }
+     * public ResponseEntity<Cuenta> actualizarCuentaPorId(@PathVariable Long id, @RequestBody Cuenta cuenta) {
+     * return new ResponseEntity<>(cuentaService.actualizar(cuenta,id), HttpStatus.OK);
+     * }
      */
 
     @PatchMapping("/eliminar/{id}")
