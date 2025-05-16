@@ -45,5 +45,6 @@ public class Deposito extends Transaccion {
     private void init() {
         this.setEstado(true);
         this.setFecha(LocalDateTime.now());
+        this.idExterno = UUID.randomUUID();
     }
 }
