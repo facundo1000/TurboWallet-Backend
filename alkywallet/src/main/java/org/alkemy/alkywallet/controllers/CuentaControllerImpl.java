@@ -2,6 +2,7 @@ package org.alkemy.alkywallet.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.alkemy.alkywallet.controllers.dto.CuentaDto;
 import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.services.CuentaServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,12 @@ public class CuentaControllerImpl {
     private final CuentaServiceImpl cuentaService;
 
     @GetMapping
-    public ResponseEntity<List<Cuenta>> obtenerTodosCuentas() {
+    public ResponseEntity<List<CuentaDto>> obtenerTodosCuentas() {
         return new ResponseEntity<>(cuentaService.obtenerTodos(), HttpStatus.OK);
     }
 
     @GetMapping("/estado")
-    public ResponseEntity<List<Cuenta>> obtenerPorEstado(@RequestParam Boolean estado) {
+    public ResponseEntity<List<CuentaDto>> obtenerPorEstado(@RequestParam Boolean estado) {
         return new ResponseEntity<>(cuentaService.obtenerPorEstado(estado), HttpStatus.OK);
     }
 

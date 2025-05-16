@@ -1,6 +1,8 @@
 package org.alkemy.alkywallet.services;
 
 import lombok.RequiredArgsConstructor;
+import org.alkemy.alkywallet.controllers.dto.CuentaDto;
+import org.alkemy.alkywallet.mapper.CuentaMapper;
 import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
@@ -18,14 +20,21 @@ public class CuentaServiceImpl {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final CuentaMapper cuentaMapper;
 
-    public List<Cuenta> obtenerTodos() {
-        return cuentaRepository.findAll();
+    public List<CuentaDto> obtenerTodos() {
+
+        return cuentaRepository.findAll()
+                .stream()
+                .map(cuentaMapper::cuentaToCuentaDto).toList();
     }
 
-
-    public List<Cuenta> obtenerPorEstado(Boolean estado) {
-        return cuentaRepository.findAll().stream().filter(c -> c.getEstado().equals(estado)).toList();
+    public List<CuentaDto> obtenerPorEstado(Boolean estado) {
+        return cuentaRepository.findAll()
+                .stream()
+                .filter(c -> c.getEstado().equals(estado))
+                .map(cuentaMapper::cuentaToCuentaDto)
+                .toList();
     }
 
 
