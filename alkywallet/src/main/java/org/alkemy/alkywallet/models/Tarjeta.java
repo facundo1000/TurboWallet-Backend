@@ -49,6 +49,12 @@ public class Tarjeta {
     private Cuenta cuenta;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "tbl_tarjeta_transferencia",
+            joinColumns = @JoinColumn(name = "id_tarjeta"),
+            inverseJoinColumns = @JoinColumn(name = "id_transaccion"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_tarjeta", "id_transaccion"})
+    )
     private Set<Transferencia> transferencias;
 
     @PrePersist

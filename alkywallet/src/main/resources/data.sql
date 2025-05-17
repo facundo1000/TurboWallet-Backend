@@ -56,9 +56,20 @@ VALUES ('250000','2025-06-25T10:33:56','transferencia',true,'debito','pago de al
 INSERT INTO transferencia (monto,fecha,medio_de_pago,estado,tipo_transferencia,motivo,nombre_destinatario,banco_destino,cuenta_destinatario,cuenta_origen)
 VALUES ('50000','2025-06-10T10:30:56','transferencia',true,'debito','varios','Totec.S.A','BancoTres','trabajar esto','trabajar esto');
 
+INSERT INTO transferencia (monto,fecha,medio_de_pago,estado,tipo_transferencia,motivo,nombre_destinatario,banco_destino,cuenta_destinatario,cuenta_origen)
+VALUES ('25000','2025-06-15T10:30:56','transferencia',true,'credito','alimentos y bebidas','LaAnonima.S.A','Banco8','2135421682165','789456123');
+
+INSERT INTO transferencia (monto,fecha,medio_de_pago,estado,tipo_transferencia,motivo,nombre_destinatario,banco_destino,cuenta_destinatario,cuenta_origen)
+VALUES ('250000','2025-06-21T12:30:56','transferencia',true,'debito','pago de alquiler','ReMax.S.A','Banco9','trabajar esto','trabajar esto');
+
 -- TABLA INTERMEDIA CUENTA-TRANSFERENCIA
 INSERT INTO tbl_cuenta_transferencia (id_cuenta, id_transaccion) VALUES (1,1);
 INSERT INTO tbl_cuenta_transferencia (id_cuenta, id_transaccion) VALUES (1,2);
+
+--TABLA INTERMEDIA TARJETA-TRANSFERENCIA
+INSERT INTO tbl_tarjeta_transferencia(id_tarjeta,id_transaccion) VALUES (1,3);
+INSERT INTO tbl_tarjeta_transferencia(id_tarjeta,id_transaccion) VALUES (2,4);
+
 
 -- ALMACENAMIENTO DE SALDO
 INSERT INTO almacenamiento_saldo (monto,fecha,medio_de_pago,estado,codigo_referencia,comision_aplicada)
