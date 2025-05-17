@@ -8,6 +8,7 @@ import org.alkemy.alkywallet.controllers.dto.AuthLoginRequest;
 import org.alkemy.alkywallet.controllers.dto.AuthResponse;
 import org.alkemy.alkywallet.services.UserDetailServiceImpl;
 import org.alkemy.alkywallet.swagger.save.ApiResponseCrear;
+import org.alkemy.alkywallet.swagger.save.ApiResponseUsuarioLogin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +24,12 @@ public class AuthControllerImpl {
 
     private final UserDetailServiceImpl userDetailService;
 
+    @ApiResponseUsuarioLogin
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthLoginRequest request) {
         return new ResponseEntity<>(this.userDetailService.loginUser(request), HttpStatus.OK);
     }
+
 
     @ApiResponseCrear
     @PostMapping("/register")
