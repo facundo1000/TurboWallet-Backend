@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: alkywallet # nombre de la aplicacion dentro de spring
+
+  h2:
+    console:
+      enabled: true # habilita la consola de la base de datos
+      path: /h2 # permite modificar la url de la base de datos
+
+  #Conexion a base de datos
+  datasource:
+    driver-class-name: org.h2.Driver #declaracion del driver a utilizar
+    url: jdbc:h2:mem:alkywalletdb # declaracion de la BD
+    username: admin
+    password:
+
+  jpa:
+    defer-datasource-initialization: true # permite tomar un archivo sql para cargar datos en tablas
+
+  security:
+    jwt:
+      key:
+        private: ${SECRET_KEY}
+      user:
+        generator: ${USER_GENERATOR}
+
+# OpenApi Configuration
+springdoc:
+  api-docs:
+    path: /openapi/api-docs
+  swagger-ui:
+    path: /openapi/swagger
+
+#Logs para bases de datos
+logging:
+  level:
+    sql: debug
+    org:
+      springframework:
+        security: debug
+
