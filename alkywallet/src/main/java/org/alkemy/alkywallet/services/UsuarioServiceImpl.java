@@ -21,7 +21,8 @@ public class UsuarioServiceImpl {
     public List<Usuario> obtenerUsuariosActivos() {
         return usuarioRepository.findAll()
                 .stream()
-                .filter(u -> u.getEstado().equals(true)).toList();
+                .filter(u -> u.getEstado().equals(true))
+                .toList();
     }
 
     public Usuario obtenerUsuarioPorId(Long id) {

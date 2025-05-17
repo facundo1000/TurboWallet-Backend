@@ -5,6 +5,7 @@ import org.alkemy.alkywallet.controllers.dto.TarjetaDto;
 import org.alkemy.alkywallet.mapper.TarjetaMapper;
 import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.models.Tarjeta;
+import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.TarjetaRepository;
 import org.springframework.stereotype.Service;

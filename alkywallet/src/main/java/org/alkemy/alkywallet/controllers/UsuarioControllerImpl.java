@@ -25,6 +25,7 @@ public class UsuarioControllerImpl {
 
     /**
      * Funcion que retorna todos los usuarios registrados en la base de datos
+     *
      * @return List<Usuario>
      */
 
@@ -36,6 +37,7 @@ public class UsuarioControllerImpl {
 
     /**
      * Funcion que retorna todos los usuarios registrados en la base de datos, segun su estado
+     *
      * @return List<Usuario>
      */
     @Operation(summary = "Metodo que retorna a todos los usuarios registrados en sistema, segun su estado")
@@ -56,6 +58,7 @@ public class UsuarioControllerImpl {
 
     /**
      * Funcion que retorna un usuario registrado en la base de datos, segun su id.
+     *
      * @param id Long
      * @return Usuario
      */
@@ -78,7 +81,8 @@ public class UsuarioControllerImpl {
 
     /**
      * Funcion que actualiza un usuario registrado en la base de datos, segun su id.
-     * @param id Long
+     *
+     * @param id      Long
      * @param usuario Usuario
      * @return Usuario
      */
@@ -101,6 +105,7 @@ public class UsuarioControllerImpl {
 
     /**
      * Funcion que actualiza el 'estado' de un usuario registrado en la base de datos, segun su id.
+     *
      * @param id Long
      * @return Void
      */
