@@ -4,7 +4,7 @@ INSERT INTO usuarios (nombre, apellido, email,contrasenia,fecha_registro ,fecha_
 
 INSERT INTO roles (id_rol,rol_nombre) VALUES (1,'ADMIN');
 INSERT INTO roles (id_rol,rol_nombre) VALUES (2,'USER');
-INSERT INTO roles (id_rol,rol_nombre) VALUES (3,'INVITED');
+-- INSERT INTO roles (id_rol,rol_nombre) VALUES (3,'INVITED');
 
 INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (1,1);
 INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (1,2);
