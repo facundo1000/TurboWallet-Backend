@@ -1,6 +1,7 @@
 package org.alkemy.alkywallet.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Transaccion {
     @Setter(AccessLevel.NONE)
     private Long idTransaccion;
 
+    @NotBlank
     private String monto;
 
     private LocalDateTime fecha;

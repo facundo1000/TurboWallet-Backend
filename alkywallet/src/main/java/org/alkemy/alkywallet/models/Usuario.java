@@ -45,6 +45,10 @@ public class Usuario {
     )
     private Set<Rol> roles = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @Transient
+    private Set<Cuenta> cuentas = new HashSet<>();
+
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro;
 
