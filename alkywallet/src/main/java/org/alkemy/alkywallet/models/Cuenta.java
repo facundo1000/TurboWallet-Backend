@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.alkemy.alkywallet.utils.TipoMoneda;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -27,6 +28,9 @@ public class Cuenta {
     private String cbu;
 
     private String saldo;
+
+    @Enumerated(EnumType.STRING)
+    private TipoMoneda moneda;
 
     @Column(name = "fecha_apertura")
     private LocalDateTime fechaApertura;
