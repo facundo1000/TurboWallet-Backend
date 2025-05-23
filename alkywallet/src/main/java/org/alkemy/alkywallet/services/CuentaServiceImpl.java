@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.controllers.dto.CuentaDto;
 import org.alkemy.alkywallet.mapper.CuentaMapper;
 import org.alkemy.alkywallet.models.Cuenta;
+import org.alkemy.alkywallet.models.Tarjeta;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -53,26 +55,41 @@ public class CuentaServiceImpl {
     }
 
 
-    public Cuenta obtenerPorId(Long id) {
+    public CuentaDto obtenerPorId(Long id) {
         return cuentaRepository
                 .findById(id)
+                .map(cuentaMapper::cuentaToCuentaDto)
                 .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + id + " no existe"));
     }
 
 
-    public CuentaDto crearCuentApartirDeUsuario(Long idUsuario) {
+    /**
+     * Metodo que sirve para la creacion de una cuenta a partir de un usuario registrado en sistema.
+     * <br>
+     * La funcion no tiene retorno
+     *
+     * @param idUsuario Long
+     */
+    public void crearCuentApartirDeUsuario(Long idUsuario) {
 
+        //Se busca un usuario existente
         Usuario usuarioExistente = usuarioRepository
                 .findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + idUsuario + " no existe"));
 
+        //Cuenta incluida por defecto
         Cuenta newCuenta = new Cuenta();
+        newCuenta.setSaldo("0.00");
+
+        //Tarjeta por defecto incluida con la cuenta
+        Tarjeta tarjeta = Tarjeta.builder()
+                .nombreTitular(usuarioExistente.getNombre().concat(" ").concat(usuarioExistente.getApellido()))
+                .topeGasto(newCuenta.getSaldo())
+                .build();
 
         newCuenta.setUsuario(usuarioExistente);
-
-        newCuenta.setTarjetas(new HashSet<>());
+        newCuenta.setTarjetas(Set.of(tarjeta));
         cuentaRepository.save(newCuenta);
-        return cuentaMapper.cuentaToCuentaDto(newCuenta);
     }
 
     //TODO: Resolver si existe caso de uso valido para este metodo
