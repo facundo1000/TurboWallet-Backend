@@ -29,10 +29,25 @@ public class CuentaServiceImpl {
                 .map(cuentaMapper::cuentaToCuentaDto).toList();
     }
 
-    public List<CuentaDto> obtenerPorEstado(Boolean estado) {
+    public List<CuentaDto> obtenerPorEstado() {
         return cuentaRepository.findAll()
                 .stream()
-                .filter(c -> c.getEstado().equals(estado))
+                .filter(c -> c.getEstado().equals(true))
+                .map(cuentaMapper::cuentaToCuentaDto)
+                .toList();
+    }
+
+    public List<CuentaDto> obtenerCuentasActivasPorUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
+
+        if (usuario.getEstado() == null || !usuario.getEstado()) {
+            throw new IllegalArgumentException("El usuario no está activo");
+        }
+        List<Cuenta> cuentasActivas = cuentaRepository.findAllByUsuarioAndEstado(usuario, true);
+
+        return cuentasActivas
+                .stream()
                 .map(cuentaMapper::cuentaToCuentaDto)
                 .toList();
     }
@@ -45,7 +60,7 @@ public class CuentaServiceImpl {
     }
 
 
-    public Cuenta crearCuentApartirDeUsuario(Long idUsuario) {
+    public CuentaDto crearCuentApartirDeUsuario(Long idUsuario) {
 
         Usuario usuarioExistente = usuarioRepository
                 .findById(idUsuario)
@@ -56,8 +71,8 @@ public class CuentaServiceImpl {
         newCuenta.setUsuario(usuarioExistente);
 
         newCuenta.setTarjetas(new HashSet<>());
-
-        return cuentaRepository.save(newCuenta);
+        cuentaRepository.save(newCuenta);
+        return cuentaMapper.cuentaToCuentaDto(newCuenta);
     }
 
     //TODO: Resolver si existe caso de uso valido para este metodo

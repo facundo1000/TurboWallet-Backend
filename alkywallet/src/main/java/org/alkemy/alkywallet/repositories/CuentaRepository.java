@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
 
     Optional<List<Cuenta>> findCuentasByUsuario(Usuario usuario);
+
+    List<Cuenta> findAllByUsuarioAndEstado(Usuario usuario, boolean estado);
 }
