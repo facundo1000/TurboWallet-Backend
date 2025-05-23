@@ -90,7 +90,7 @@ public class Cuenta {
         this.estado = true;
         this.fechaApertura = LocalDateTime.now();
         this.cbu = generarCBU();
-        this.saldo = "0.00";
+        this.setMoneda(TipoMoneda.ARS);
     }
 
     /**
