@@ -1,5 +1,6 @@
 package org.alkemy.alkywallet.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.config.filters.JwtTokenValidator;
 import org.alkemy.alkywallet.utils.JwtUtils;
@@ -20,6 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /**
  * Security configuration class
@@ -42,21 +48,27 @@ public class SecurityConfig {
      * @throws Exception
      */
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth ->
-
                         auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**", "/openapi/**").permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().permitAll()
                 )
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
-                .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint((request, response, authException) -> {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"error\":\"No autorizado\"}");
+                    });
+                })
                 .build();
     }
 
@@ -83,5 +95,18 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(16);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 }
