@@ -66,6 +66,8 @@ public class Tarjeta {
         this.fechaVencimiento = randomDate();
         this.numeroTarjeta = generarNumeroTarjeta();
         this.cvv = generarCVV();
+        this.tipo = TipoTarjeta.NATIVA;
+        this.banco = "Banco Bancario";
     }
 
 
