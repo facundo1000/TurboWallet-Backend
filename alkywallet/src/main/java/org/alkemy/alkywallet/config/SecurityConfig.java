@@ -54,9 +54,9 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/h2", "/h2/**", "/api/v1/auth/**", "/openapi/**").permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
-                .cors(Customizer.withDefaults())
+                .cors(c -> corsConfigurationSource())
                 .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
