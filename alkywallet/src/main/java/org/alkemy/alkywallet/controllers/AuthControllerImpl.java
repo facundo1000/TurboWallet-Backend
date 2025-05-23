@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:5173"})
 @RequestMapping("/api/v1/auth")
 @Tag(name = "AuthController", description = "Controlador de login y registro de usuarios")
 public class AuthControllerImpl {
@@ -34,5 +33,13 @@ public class AuthControllerImpl {
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthCreateRequest request) {
         return new ResponseEntity<>(userDetailService.registerUser(request), HttpStatus.CREATED);
     }
+
+    @PostMapping("/renew")
+    public ResponseEntity<AuthResponse> renew(@RequestHeader("Authorization") String authHeader) {
+        // Extrae el token del header, típicamente con el prefijo "Bearer "
+        String token = authHeader.replace("Bearer ", "");
+        return new ResponseEntity<>(userDetailService.renewToken(token), HttpStatus.OK);
+    }
+
 
 }
