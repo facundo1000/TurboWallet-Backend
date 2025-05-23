@@ -11,12 +11,12 @@ INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (1,2);
 INSERT INTO tbl_usuario_roles (id_usuario,id_rol) VALUES (2,2);
 
 
-INSERT INTO cuentas (cbu, saldo, fecha_apertura, estado) VALUES
-('1059127711100063105336',1500000.00, '2023-01-15', true),
-('6321787211100052764841',2450000.75, '2023-03-10', true),
-('0813032311100080929014',8000000.50, '2022-12-01', false),
-('7271961711100068475704',12990000.99, '2023-06-25', true),
-('3788914011100006218660',5000000.00, '2023-02-20', true);
+INSERT INTO cuentas (cbu, saldo, fecha_apertura, estado, moneda) VALUES
+('1059127711100063105336',1500000.00, '2023-01-15', true,'ARS'),
+('6321787211100052764841',2450000.75, '2023-03-10', true,'USD'),
+('0813032311100080929014',8000000.50, '2022-12-01', false,'ARS'),
+('7271961711100068475704',12990000.99, '2023-06-25', true,'USD'),
+('3788914011100006218660',5000000.00, '2023-02-20', true,'ARS');
 
 INSERT INTO tbl_usuario_cuentas (id_cuenta,id_usuario) VALUES (1,1);
 INSERT INTO tbl_usuario_cuentas (id_cuenta,id_usuario) VALUES (2,1);
