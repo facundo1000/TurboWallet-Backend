@@ -2,6 +2,7 @@ package org.alkemy.alkywallet.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.alkemy.alkywallet.utils.TipoTarjeta;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -13,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tarjetas")
 public class Tarjeta {
@@ -33,7 +35,8 @@ public class Tarjeta {
 
     private String banco;
 
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoTarjeta tipo; //CREDITO - DEBITO - NATIVA
 
     @Column(name = "tope_gasto")
     private String topeGasto;
@@ -63,6 +66,8 @@ public class Tarjeta {
         this.fechaVencimiento = randomDate();
         this.numeroTarjeta = generarNumeroTarjeta();
         this.cvv = generarCVV();
+        this.tipo = TipoTarjeta.NATIVA;
+        this.banco = "Banco Bancario";
     }
 
 

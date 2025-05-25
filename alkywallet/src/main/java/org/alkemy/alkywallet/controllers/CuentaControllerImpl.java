@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.controllers.dto.CuentaDto;
-import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.services.CuentaServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +40,7 @@ public class CuentaControllerImpl {
     }
 
 
-    @Operation(summary = "Metodo que retorna a todas las cuentas registradas en sistema filtradas por ACTIVA o INACTIVA")
+    @Operation(summary = "Metodo que retorna a todas las cuentas registradas en sistema activas de usuarios activos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"
                     , content = {
@@ -52,9 +51,27 @@ public class CuentaControllerImpl {
                     @Content(mediaType = "application/json")
             })
     })
-    @GetMapping("/estado")
-    public ResponseEntity<List<CuentaDto>> obtenerPorEstado(@RequestParam Boolean estado) {
-        return new ResponseEntity<>(cuentaService.obtenerPorEstado(estado), HttpStatus.OK);
+
+    @GetMapping("/usuario/{idUsuario}/activas")
+    public ResponseEntity<List<CuentaDto>> obtenerCuentasActivasPorUsuario(@PathVariable Long idUsuario) {
+        return new ResponseEntity<>(cuentaService.obtenerCuentasActivasPorUsuario(idUsuario), HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Metodo que retorna a todas las cuentas registradas en sistema filtradas por ACTIVA a partir de un usuario registrado en sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"
+                    , content = {
+                    @Content(mediaType = "application/json")
+            }),
+            @ApiResponse(responseCode = "401", description = "Forbidden"
+                    , content = {
+                    @Content(mediaType = "application/json")
+            })
+    })
+    @GetMapping("/activas")
+    public ResponseEntity<List<CuentaDto>> obtenerPorEstado() {
+        return new ResponseEntity<>(cuentaService.obtenerPorEstado(), HttpStatus.OK);
     }
 
     @Operation(summary = "Metodo que retorna a una cuenta registradas en sistema por ID")
@@ -69,11 +86,12 @@ public class CuentaControllerImpl {
             })
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Cuenta> obtenerCuentaPorId(@PathVariable Long id) {
+    public ResponseEntity<CuentaDto> obtenerCuentaPorId(@PathVariable Long id) {
         return new ResponseEntity<>(cuentaService.obtenerPorId(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Metodo que crea una cuenta en sistema")
+    /*
+        @Operation(summary = "Metodo que crea una cuenta en sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cuenta creada exitosamente"
                     , content = {
@@ -85,9 +103,11 @@ public class CuentaControllerImpl {
             })
     })
     @PostMapping("/crear/{idUsuario}")
-    public ResponseEntity<Cuenta> crearCuenta(@PathVariable Long idUsuario) {
+    public ResponseEntity<CuentaDto> crearCuenta(@PathVariable Long idUsuario) {
         return new ResponseEntity<>(cuentaService.crearCuentApartirDeUsuario(idUsuario), HttpStatus.CREATED);
     }
+     */
+
 
     // TODO: hacer el servicio PRIMERO
     //@PutMapping("/actualizar/{id}")

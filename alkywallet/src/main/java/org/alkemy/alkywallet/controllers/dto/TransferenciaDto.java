@@ -5,5 +5,6 @@ public record TransferenciaDto(String tipoTransferencia,
                                String nombreDestinatario,
                                String bancoDestino,
                                String cuentaDestinatario,
-                               String cuentaOrigen) {
+                               String cuentaOrigen,
+                               Boolean estado) {
 }

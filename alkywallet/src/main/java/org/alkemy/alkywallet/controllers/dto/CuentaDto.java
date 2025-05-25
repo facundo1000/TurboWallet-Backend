@@ -3,6 +3,7 @@ package org.alkemy.alkywallet.controllers.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.alkemy.alkywallet.utils.TipoMoneda;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ public class CuentaDto {
     private String saldo;
 
     private LocalDateTime fechaApertura;
+
+    private TipoMoneda moneda;
 
     private UsuarioDto usuarioDto;
 

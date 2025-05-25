@@ -5,5 +5,6 @@ import java.util.UUID;
 public record DepositoDto(
         String canal,
         String origenDeFondos,
-        UUID idExterno) {
+        UUID idExterno,
+        Boolean estado) {
 }

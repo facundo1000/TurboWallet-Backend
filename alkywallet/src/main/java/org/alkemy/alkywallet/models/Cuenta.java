@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.alkemy.alkywallet.utils.TipoMoneda;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -28,6 +29,9 @@ public class Cuenta {
 
     private String saldo;
 
+    @Enumerated(EnumType.STRING)
+    private TipoMoneda moneda;
+
     @Column(name = "fecha_apertura")
     private LocalDateTime fechaApertura;
 
@@ -40,7 +44,7 @@ public class Cuenta {
     )
     private Usuario usuario;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_cuenta_tarjeta",
             joinColumns = @JoinColumn(name = "id_cuenta"),
@@ -51,7 +55,7 @@ public class Cuenta {
     Set<Tarjeta> tarjetas = new HashSet<>();
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_cuenta_deposito",
             joinColumns = @JoinColumn(name = "id_cuenta"),
@@ -61,7 +65,7 @@ public class Cuenta {
     private Set<Deposito> deposito;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_cuenta_transferencia",
             joinColumns = @JoinColumn(name = "id_cuenta"),
@@ -70,7 +74,7 @@ public class Cuenta {
     )
     private Set<Transferencia> transferencia;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_cuenta_almacenamiento",
             joinColumns = @JoinColumn(name = "id_cuenta"),
@@ -86,7 +90,7 @@ public class Cuenta {
         this.estado = true;
         this.fechaApertura = LocalDateTime.now();
         this.cbu = generarCBU();
-        this.saldo = "0.00";
+        this.setMoneda(TipoMoneda.ARS);
     }
 
     /**

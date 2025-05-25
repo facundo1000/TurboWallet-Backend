@@ -1,7 +1,9 @@
 package org.alkemy.alkywallet.services;
 
 import lombok.RequiredArgsConstructor;
+import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.models.Usuario;
+import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.List;
 public class UsuarioServiceImpl {
 
     private final UsuarioRepository usuarioRepository;
+
+    private final CuentaRepository cuentaRepository;
 
     public List<Usuario> obtenerTodosUsuarios() {
         return usuarioRepository.findAll();
@@ -90,11 +94,34 @@ public class UsuarioServiceImpl {
 
     }
 
+    /**
+     * Funcion soft-delete del usuario por ID.
+     * <br>
+     * Al cambiar el estado a 'false', el estado de todos sus productos cambia a 'false'
+     *
+     * @param id Long
+     */
     public void eliminarUsuarioPorId(Long id) {
         Usuario usuario = usuarioRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + id + " no existe"));
+
+        List<Cuenta> cuentas = cuentaRepository.findCuentasByUsuario(usuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + id + " no tiene cuentas asociadas"));
+
+        cuentas.forEach(c ->
+                c.getTarjetas()
+                        .forEach(t -> {
+                            t.setEstado(false);
+                        }));
+        cuentas.forEach(cuenta -> cuenta.getDeposito().forEach(d -> d.setEstado(false)));
+        cuentas.forEach(cuenta -> cuenta.getAlmacenamientoSaldo().forEach(a -> a.setEstado(false)));
+        cuentas.forEach(cuenta -> cuenta.getTransferencia().forEach(t -> t.setEstado(false)));
+        cuentas.forEach(c -> c.setEstado(false));
+        cuentaRepository.saveAll(cuentas);
+        usuario.setFechaActualizacion(LocalDateTime.now());
         usuario.setEstado(false);
+
         usuarioRepository.save(usuario);
     }
 }
