@@ -2,6 +2,7 @@ package org.alkemy.alkywallet.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.alkemy.alkywallet.utils.MarcaTarjeta;
 import org.alkemy.alkywallet.utils.TipoTarjeta;
 
 import java.time.LocalDate;
@@ -36,6 +37,9 @@ public class Tarjeta {
     private String banco;
 
     @Enumerated(EnumType.STRING)
+    private MarcaTarjeta marca;
+
+    @Enumerated(EnumType.STRING)
     private TipoTarjeta tipo; //CREDITO - DEBITO - NATIVA
 
     @Column(name = "tope_gasto")
@@ -66,8 +70,6 @@ public class Tarjeta {
         this.fechaVencimiento = randomDate();
         this.numeroTarjeta = generarNumeroTarjeta();
         this.cvv = generarCVV();
-        this.tipo = TipoTarjeta.NATIVA;
-        this.banco = "Banco Bancario";
     }
 
 
