@@ -8,6 +8,8 @@ import org.alkemy.alkywallet.models.Tarjeta;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
+import org.alkemy.alkywallet.utils.TipoMoneda;
+import org.alkemy.alkywallet.utils.TipoTarjeta;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -66,11 +68,35 @@ public class CuentaServiceImpl {
     /**
      * Metodo que sirve para la creacion de una cuenta a partir de un usuario registrado en sistema.
      * <br>
+     * Y tambien que tipo de moneda se utilizara en la cuenta
+     * @param idUsuario Long
+     * @param tipoMoneda TipoMoneda
+     * @return CuentaDto object
+     */
+    public CuentaDto crearCuentaNuevaApartirDeUsuario(Long idUsuario, TipoMoneda tipoMoneda) {
+        //Se busca un usuario existente
+        Usuario usuarioExistente = usuarioRepository
+                .findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + idUsuario + " no existe"));
+
+
+
+        //Cuenta incluida por defecto
+        Cuenta newCuenta = new Cuenta();
+        newCuenta.setSaldo("0.00");
+        newCuenta.setUsuario(usuarioExistente);
+        newCuenta.setMoneda(tipoMoneda);
+        return cuentaMapper.cuentaToCuentaDto(cuentaRepository.save(newCuenta));
+    }
+
+    /**
+     * Metodo que sirve para la creacion de una cuenta  inicial a partir de un usuario registrado en sistema.
+     * <br>
      * La funcion no tiene retorno
      *
      * @param idUsuario Long
      */
-    public void crearCuentApartirDeUsuario(Long idUsuario) {
+    public void crearCuentAInicialApartirDeUsuario(Long idUsuario) {
 
         //Se busca un usuario existente
         Usuario usuarioExistente = usuarioRepository
@@ -85,6 +111,7 @@ public class CuentaServiceImpl {
         Tarjeta tarjeta = Tarjeta.builder()
                 .nombreTitular(usuarioExistente.getNombre().concat(" ").concat(usuarioExistente.getApellido()))
                 .topeGasto(newCuenta.getSaldo())
+                .tipo(TipoTarjeta.NATIVA)
                 .build();
 
         newCuenta.setUsuario(usuarioExistente);
@@ -111,7 +138,6 @@ public class CuentaServiceImpl {
         return cuentaRepository.save(newCuenta);
     }
 
-    //TODO: hacer el "actualizar". Analizar en que casos de uso corresponde.
     public Cuenta actualizar(Cuenta cuenta, Long idCuenta) {
 
         Cuenta cuentaRegistrada = cuentaRepository
