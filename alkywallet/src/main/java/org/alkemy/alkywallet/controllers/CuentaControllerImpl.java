@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.controllers.dto.CuentaDto;
+import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.services.CuentaServiceImpl;
+import org.alkemy.alkywallet.utils.TipoMoneda;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -90,8 +92,8 @@ public class CuentaControllerImpl {
         return new ResponseEntity<>(cuentaService.obtenerPorId(id), HttpStatus.OK);
     }
 
-    /*
-        @Operation(summary = "Metodo que crea una cuenta en sistema")
+
+    @Operation(summary = "Metodo que crea una cuenta en sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cuenta creada exitosamente"
                     , content = {
@@ -103,20 +105,16 @@ public class CuentaControllerImpl {
             })
     })
     @PostMapping("/crear/{idUsuario}")
-    public ResponseEntity<CuentaDto> crearCuenta(@PathVariable Long idUsuario) {
-        return new ResponseEntity<>(cuentaService.crearCuentApartirDeUsuario(idUsuario), HttpStatus.CREATED);
+    public ResponseEntity<CuentaDto> crearCuentaNueva(@PathVariable Long idUsuario, @RequestParam TipoMoneda moneda) {
+        return new ResponseEntity<>(cuentaService.crearCuentaNuevaApartirDeUsuario(idUsuario, moneda), HttpStatus.CREATED);
     }
-     */
 
 
-    // TODO: hacer el servicio PRIMERO
-    //@PutMapping("/actualizar/{id}")
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Cuenta> actualizarCuentaPorId(@PathVariable Long id, @RequestBody Cuenta cuenta) {
+        return new ResponseEntity<>(cuentaService.actualizar(cuenta, id), HttpStatus.OK);
+    }
 
-    /**
-     * public ResponseEntity<Cuenta> actualizarCuentaPorId(@PathVariable Long id, @RequestBody Cuenta cuenta) {
-     * return new ResponseEntity<>(cuentaService.actualizar(cuenta,id), HttpStatus.OK);
-     * }
-     */
 
     @Operation(summary = "Metodo que genera un soft-delete sobre una cuenta registrada en sistema por ID")
     @ApiResponses(value = {
