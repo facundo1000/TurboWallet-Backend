@@ -8,6 +8,7 @@ import org.alkemy.alkywallet.models.Tarjeta;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
+import org.alkemy.alkywallet.utils.MarcaTarjeta;
 import org.alkemy.alkywallet.utils.TipoMoneda;
 import org.alkemy.alkywallet.utils.TipoTarjeta;
 import org.springframework.stereotype.Service;
@@ -112,6 +113,7 @@ public class CuentaServiceImpl {
                 .nombreTitular(usuarioExistente.getNombre().concat(" ").concat(usuarioExistente.getApellido()))
                 .topeGasto(newCuenta.getSaldo())
                 .tipo(TipoTarjeta.ALKYWALLET)
+                .marca(MarcaTarjeta.ALKYWALLET)
                 .build();
 
         newCuenta.setUsuario(usuarioExistente);

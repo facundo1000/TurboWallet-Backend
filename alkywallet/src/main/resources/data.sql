@@ -27,7 +27,7 @@ INSERT INTO tbl_usuario_cuentas (id_cuenta,id_usuario) VALUES (5,1);
 
 INSERT INTO tarjetas (nombre_titular,tipo, fecha_vencimiento, estado, tope_gasto, numero_tarjeta, banco, cvv,marca) VALUES
 ('roberto carlos','CREDITO', '2026-07-01', true, 10000.00, '4111111111111111', 'Banco Uno', '123','MASTERCARD'),
-('marcelo gallardo','NATIVA', '2025-12-01', true, 3000.00, '4222222222222', 'Banco Dos', '456','ALKYWALLET'),
+('marcelo gallardo','ALKYWALLET', '2025-12-01', true, 3000.00, '4222222222222', 'Banco Dos', '456','ALKYWALLET'),
 ('juan manso','CREDITO', '2024-10-01', false, 2000.00, '4333333333333', 'Banco Tres', '789','MASTERCARD'),
 ('obi juan','DEBITO', '2026-01-01', true, 1500.00, '4444444444444', 'Banco Uno', '321','VISA'),
 ('guido','CREDITO', '2027-05-01', true, 5000.00, '4555555555555', 'Banco Cuatro', '654','MASTERCARD');
