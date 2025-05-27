@@ -156,6 +156,7 @@ public class CuentaServiceImpl {
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + id + " no existe"));
         cuenta.setEstado(false);
+        cuenta.getTarjetas().forEach(t -> t.setEstado(false));
         cuentaRepository.save(cuenta);
     }
 
