@@ -111,7 +111,7 @@ public class CuentaServiceImpl {
         Tarjeta tarjeta = Tarjeta.builder()
                 .nombreTitular(usuarioExistente.getNombre().concat(" ").concat(usuarioExistente.getApellido()))
                 .topeGasto(newCuenta.getSaldo())
-                .tipo(TipoTarjeta.NATIVA)
+                .tipo(TipoTarjeta.ALKYWALLET)
                 .build();
 
         newCuenta.setUsuario(usuarioExistente);
