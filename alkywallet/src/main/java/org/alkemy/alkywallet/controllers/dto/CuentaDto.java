@@ -14,6 +14,8 @@ import java.util.Set;
 @Data
 public class CuentaDto {
 
+    private Long idCuenta;
+
     private String cbu;
 
     private String saldo;
