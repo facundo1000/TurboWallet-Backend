@@ -55,7 +55,7 @@ public class Tarjeta {
     @Transient
     private Cuenta cuenta;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tbl_tarjeta_transferencia",
             joinColumns = @JoinColumn(name = "id_tarjeta"),
@@ -67,9 +67,6 @@ public class Tarjeta {
     @PrePersist
     private void init() {
         this.estado = true;
-        this.fechaVencimiento = randomDate();
-        this.numeroTarjeta = generarNumeroTarjeta();
-        this.cvv = generarCVV();
     }
 
 
@@ -78,7 +75,7 @@ public class Tarjeta {
      *
      * @return LocalDate object
      */
-    private LocalDate randomDate() {
+    public static LocalDate randomDate() {
 
         // Fechas límite
         LocalDate start = LocalDate.of(2026, 1, 1);
@@ -99,7 +96,7 @@ public class Tarjeta {
      *
      * @return String object con el numero de tarjeta generado.
      */
-    private String generarNumeroTarjeta() {
+    public static String generarNumeroTarjeta() {
         // Implementar lógica para generar número único de 16 dígitos
         // Ejemplo básico:
         Random random = new Random();
@@ -115,7 +112,7 @@ public class Tarjeta {
      *
      * @return String object con el CVV generado.
      */
-    private String generarCVV() {
+    public static String generarCVV() {
         // Implementar lógica para generar CVV de 3 dígitos
         Random random = new Random();
         return String.format("%03d", random.nextInt(1000));
