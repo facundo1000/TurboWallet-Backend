@@ -27,6 +27,11 @@ public class CuentaServiceImpl {
 
     private final CuentaMapper cuentaMapper;
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas en el sistema.
+     *
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerTodos() {
 
         return cuentaRepository.findAll()
@@ -34,6 +39,11 @@ public class CuentaServiceImpl {
                 .map(cuentaMapper::cuentaToCuentaDto).toList();
     }
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas y activas en el sistema.
+     *
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerPorEstado() {
         return cuentaRepository.findAll()
                 .stream()
@@ -42,6 +52,12 @@ public class CuentaServiceImpl {
                 .toList();
     }
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas en el sistema por medio de un usuario registrado en sistema.
+     *
+     * @param idUsuario
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerCuentasActivasPorUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
@@ -57,7 +73,12 @@ public class CuentaServiceImpl {
                 .toList();
     }
 
-
+    /**
+     * Metodo que sirve para obtener una cuenta de una registrado en sistema por medio de su id.
+     *
+     * @param id Long
+     * @return CuentaDto object
+     */
     public CuentaDto obtenerPorId(Long id) {
         return cuentaRepository
                 .findById(id)
@@ -70,7 +91,8 @@ public class CuentaServiceImpl {
      * Metodo que sirve para la creacion de una cuenta a partir de un usuario registrado en sistema.
      * <br>
      * Y tambien que tipo de moneda se utilizara en la cuenta
-     * @param idUsuario Long
+     *
+     * @param idUsuario  Long
      * @param tipoMoneda TipoMoneda
      * @return CuentaDto object
      */
@@ -79,7 +101,6 @@ public class CuentaServiceImpl {
         Usuario usuarioExistente = usuarioRepository
                 .findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + idUsuario + " no existe"));
-
 
 
         //Cuenta incluida por defecto
@@ -107,6 +128,7 @@ public class CuentaServiceImpl {
         //Cuenta incluida por defecto
         Cuenta newCuenta = new Cuenta();
         newCuenta.setSaldo("0.00");
+        newCuenta.setMoneda(TipoMoneda.ARS);
 
         //Tarjeta por defecto incluida con la cuenta
         Tarjeta tarjeta = Tarjeta.builder()
@@ -114,6 +136,9 @@ public class CuentaServiceImpl {
                 .topeGasto(newCuenta.getSaldo())
                 .tipo(TipoTarjeta.ALKYWALLET)
                 .marca(MarcaTarjeta.ALKYWALLET)
+                .cvv(Tarjeta.generarCVV())
+                .numeroTarjeta(Tarjeta.generarNumeroTarjeta())
+                .fechaVencimiento(Tarjeta.randomDate())
                 .build();
 
         newCuenta.setUsuario(usuarioExistente);
@@ -153,6 +178,11 @@ public class CuentaServiceImpl {
         return null;
     }
 
+    /**
+     * Soft-delete de una cuenta por su id con efecto cascada en las tarjetas asociadas a esta.
+     *
+     * @param id
+     */
     public void eliminar(Long id) {
         Cuenta cuenta = cuentaRepository
                 .findById(id)
