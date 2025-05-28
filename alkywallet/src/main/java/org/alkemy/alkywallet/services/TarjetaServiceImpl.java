@@ -5,7 +5,6 @@ import org.alkemy.alkywallet.controllers.dto.TarjetaDto;
 import org.alkemy.alkywallet.mapper.TarjetaMapper;
 import org.alkemy.alkywallet.models.Cuenta;
 import org.alkemy.alkywallet.models.Tarjeta;
-import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.TarjetaRepository;
 import org.springframework.stereotype.Service;
@@ -48,7 +47,7 @@ public class TarjetaServiceImpl {
     }
 
 
-    public Tarjeta crear(Tarjeta tarjeta, Long idCuenta) {
+    public Tarjeta agregarNuevaTarjetaACuenta(Tarjeta tarjeta, Long idCuenta) {
 
         Cuenta cuentaExistente = cuentaRepository
                 .findById(idCuenta)
@@ -58,14 +57,20 @@ public class TarjetaServiceImpl {
             throw new IllegalArgumentException("Error en la creacion de la tarjeta");
         }
 
-        Tarjeta newTarjeta = new Tarjeta();
+        Tarjeta newTarjeta = Tarjeta.builder()
+                .numeroTarjeta(tarjeta.getNumeroTarjeta())
+                .nombreTitular(tarjeta.getNombreTitular())
+                .tipo(tarjeta.getTipo())
+                .banco(tarjeta.getBanco())
+                .marca(tarjeta.getMarca())
+                .topeGasto(cuentaExistente.getSaldo())
+                .cuenta(cuentaExistente)
+                .fechaVencimiento(tarjeta.getFechaVencimiento())
+                .cvv(tarjeta.getCvv())
+                .estado(true)
+                .build();
 
-        newTarjeta.setNumeroTarjeta(tarjeta.getNumeroTarjeta());
-        newTarjeta.setNombreTitular(tarjeta.getNombreTitular());
-        newTarjeta.setTipo(tarjeta.getTipo());
-        newTarjeta.setBanco(tarjeta.getBanco());
-        newTarjeta.setTopeGasto(cuentaExistente.getSaldo());
-        newTarjeta.setCuenta(cuentaExistente);
+        cuentaExistente.getTarjetas().add(newTarjeta);
 
         return tarjetaRepository.save(newTarjeta);
     }
@@ -97,6 +102,7 @@ public class TarjetaServiceImpl {
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
         tarjeta.setEstado(false);
+        tarjeta.getCuenta().getTarjetas().forEach(t -> t.setEstado(false));
         tarjetaRepository.save(tarjeta);
     }
 }
