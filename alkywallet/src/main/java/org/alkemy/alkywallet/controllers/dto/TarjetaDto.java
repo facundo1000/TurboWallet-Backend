@@ -10,6 +10,7 @@ import java.util.Set;
 
 
 public record TarjetaDto(
+        Long idTarjeta,
         @NotBlank
         String nombreTitular,
         @NotBlank
