@@ -5,5 +5,5 @@ public enum MarcaTarjeta {
     VISA,
     AMERICANEXPRESS,
     ALKYWALLET,
-    UNKNOWN
+    OTRA
 }
