@@ -4,7 +4,9 @@ public record TransferenciaDto(String tipoTransferencia,
                                String motivo,
                                String nombreDestinatario,
                                String bancoDestino,
-                               String cuentaDestinatario,
+                               String cuentaDestinatario, //CBU destinatario
                                String cuentaOrigen,
-                               Boolean estado) {
+                               String medioDePago,
+                               Boolean estado,
+                               String monto) {
 }

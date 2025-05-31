@@ -53,6 +53,7 @@ public class Transferencia extends Transaccion {
         this.setEstado(true);
         this.setFecha(LocalDateTime.now());
         this.cuentaOrigen = cuenta.getCbu();
+        this.setMedioDePago("TRANSFERENCIA");
     }
 
 

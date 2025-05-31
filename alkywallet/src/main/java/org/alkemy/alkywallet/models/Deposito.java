@@ -33,7 +33,7 @@ public class Deposito extends Transaccion {
     @Column(name = "id_externo")
     private UUID idExterno;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Transient
     private Cuenta cuenta;
 

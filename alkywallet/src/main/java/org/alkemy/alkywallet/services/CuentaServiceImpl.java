@@ -178,6 +178,13 @@ public class CuentaServiceImpl {
         return null;
     }
 
+    public void editarSaldo(Cuenta cuenta, Long idCuenta) {
+        Cuenta cuentaRegistrada = cuentaRepository
+                .findById(idCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + idCuenta + " no existe"));
+
+    }
+
     /**
      * Soft-delete de una cuenta por su id con efecto cascada en las tarjetas asociadas a esta.
      *

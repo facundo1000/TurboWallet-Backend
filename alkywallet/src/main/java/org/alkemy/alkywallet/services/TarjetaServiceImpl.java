@@ -102,7 +102,7 @@ public class TarjetaServiceImpl {
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("La tarjeta con el id: " + id + " no existe"));
         tarjeta.setEstado(false);
-        tarjeta.getCuenta().getTarjetas().forEach(t -> t.setEstado(false));
+        tarjeta.getTransferencias().forEach(t -> t.setEstado(false));
         tarjetaRepository.save(tarjeta);
     }
 }
