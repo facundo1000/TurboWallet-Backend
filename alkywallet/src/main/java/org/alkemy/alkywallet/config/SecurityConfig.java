@@ -1,7 +1,7 @@
 package org.alkemy.alkywallet.config;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.alkemy.alkywallet.auth.handler.AppAuthenticationEntryPoint;
 import org.alkemy.alkywallet.config.filters.JwtTokenValidator;
 import org.alkemy.alkywallet.utils.JwtUtils;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +39,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtUtils jwtUtils;
+    private final AppAuthenticationEntryPoint authenticationEntryPoint;
 
     /**
      * Security filter chain configuration
@@ -57,18 +58,12 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .cors(c -> corsConfigurationSource())
-                .csrf(AbstractHttpConfigurer::disable) //Desactiva la protección CSRF (Cross-Site Request Forgery)
+                .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .httpBasic(Customizer.withDefaults())
-                .exceptionHandling(ex -> {
-                    ex.authenticationEntryPoint((request, response, authException) -> {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.setContentType("application/json");
-                        response.getWriter().write("{\"error\":\"No autorizado\"}");
-                    });
-                })
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .build();
     }
 

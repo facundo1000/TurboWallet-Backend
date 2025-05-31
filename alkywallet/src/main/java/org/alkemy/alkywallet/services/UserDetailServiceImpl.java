@@ -1,5 +1,6 @@
 package org.alkemy.alkywallet.services;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.alkemy.alkywallet.controllers.dto.AuthCreateRequest;
 import org.alkemy.alkywallet.controllers.dto.AuthLoginRequest;
@@ -39,6 +40,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     private final RoleRepository roleRepository;
 
+    private final CuentaServiceImpl cuentaService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -67,13 +70,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
         String username = loginRequest.username();
         String password = loginRequest.password();
 
+        Usuario usuario = repository.findByEmail(username).orElseThrow();
+
         Authentication authentication = authenticate(username, password);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
 
-        return new AuthResponse(username, "User logged succesfuly", accessToken, true);
+        return new AuthResponse(username, "User logged succesfuly", accessToken, true, usuario.getIdUsuario());
     }
 
     private Authentication authenticate(String username, String password) {
@@ -121,7 +126,36 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         String token = jwtUtils.createToken(authentication);
 
-        return new AuthResponse(email, "User registered succesfuly", token, true);
+        //FIXME: la logica queda acoplada al registro de usuarios
+        cuentaService.crearCuentAInicialApartirDeUsuario(usuarioCreado.getIdUsuario());
+
+        return new AuthResponse(email, "User registered succesfuly", token, true, usuarioCreado.getIdUsuario());
+    }
+
+    public AuthResponse renewToken(String token) {
+        // 1. Validar el token
+        if (token != null && token.startsWith("Bearer ")) {
+
+            // 2. Obtener el username desde el token
+            DecodedJWT decodedJWT = jwtUtils.validateToken(token);
+
+            String username = jwtUtils.extractUsername(decodedJWT);
+
+            // 3. Cargar el usuario usando el username extraído
+            UserDetails userDetails = loadUserByUsername(username);
+
+            // 4. Crear un nuevo token JWT
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+
+            String newToken = jwtUtils.createToken(authentication);
+
+            // 5. Devolver AuthResponse con el nuevo token
+            Usuario usuario = repository.findByEmail(username).orElseThrow();
+            return new AuthResponse(username, "Token renovado correctamente", newToken, true, usuario.getIdUsuario());
+        }
+
+        throw new BadCredentialsException("Token inválido o expirado");
     }
 
 }

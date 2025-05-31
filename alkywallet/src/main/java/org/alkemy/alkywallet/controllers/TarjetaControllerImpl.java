@@ -119,7 +119,7 @@ public class TarjetaControllerImpl {
     })
     @PostMapping("/crear/{idCuenta}")
     public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody Tarjeta tarjeta, @PathVariable Long idCuenta) {
-        return new ResponseEntity<>(tarjetaService.crear(tarjeta, idCuenta), HttpStatus.CREATED);
+        return new ResponseEntity<>(tarjetaService.agregarNuevaTarjetaACuenta(tarjeta, idCuenta), HttpStatus.CREATED);
     }
 
     /**

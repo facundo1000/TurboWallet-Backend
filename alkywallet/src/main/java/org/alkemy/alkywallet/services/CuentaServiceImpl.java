@@ -8,6 +8,9 @@ import org.alkemy.alkywallet.models.Tarjeta;
 import org.alkemy.alkywallet.models.Usuario;
 import org.alkemy.alkywallet.repositories.CuentaRepository;
 import org.alkemy.alkywallet.repositories.UsuarioRepository;
+import org.alkemy.alkywallet.utils.MarcaTarjeta;
+import org.alkemy.alkywallet.utils.TipoMoneda;
+import org.alkemy.alkywallet.utils.TipoTarjeta;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -24,6 +27,11 @@ public class CuentaServiceImpl {
 
     private final CuentaMapper cuentaMapper;
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas en el sistema.
+     *
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerTodos() {
 
         return cuentaRepository.findAll()
@@ -31,6 +39,11 @@ public class CuentaServiceImpl {
                 .map(cuentaMapper::cuentaToCuentaDto).toList();
     }
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas y activas en el sistema.
+     *
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerPorEstado() {
         return cuentaRepository.findAll()
                 .stream()
@@ -39,6 +52,12 @@ public class CuentaServiceImpl {
                 .toList();
     }
 
+    /**
+     * Metodo que sirve para obtener todas las cuentas registradas en el sistema por medio de un usuario registrado en sistema.
+     *
+     * @param idUsuario
+     * @return List<CuentaDto> object
+     */
     public List<CuentaDto> obtenerCuentasActivasPorUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("El usuario no existe"));
@@ -54,7 +73,12 @@ public class CuentaServiceImpl {
                 .toList();
     }
 
-
+    /**
+     * Metodo que sirve para obtener una cuenta de una registrado en sistema por medio de su id.
+     *
+     * @param id Long
+     * @return CuentaDto object
+     */
     public CuentaDto obtenerPorId(Long id) {
         return cuentaRepository
                 .findById(id)
@@ -66,11 +90,35 @@ public class CuentaServiceImpl {
     /**
      * Metodo que sirve para la creacion de una cuenta a partir de un usuario registrado en sistema.
      * <br>
+     * Y tambien que tipo de moneda se utilizara en la cuenta
+     *
+     * @param idUsuario  Long
+     * @param tipoMoneda TipoMoneda
+     * @return CuentaDto object
+     */
+    public CuentaDto crearCuentaNuevaApartirDeUsuario(Long idUsuario, TipoMoneda tipoMoneda) {
+        //Se busca un usuario existente
+        Usuario usuarioExistente = usuarioRepository
+                .findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario con el id: " + idUsuario + " no existe"));
+
+
+        //Cuenta incluida por defecto
+        Cuenta newCuenta = new Cuenta();
+        newCuenta.setSaldo("0.00");
+        newCuenta.setUsuario(usuarioExistente);
+        newCuenta.setMoneda(tipoMoneda);
+        return cuentaMapper.cuentaToCuentaDto(cuentaRepository.save(newCuenta));
+    }
+
+    /**
+     * Metodo que sirve para la creacion de una cuenta  inicial a partir de un usuario registrado en sistema.
+     * <br>
      * La funcion no tiene retorno
      *
      * @param idUsuario Long
      */
-    public void crearCuentApartirDeUsuario(Long idUsuario) {
+    public void crearCuentAInicialApartirDeUsuario(Long idUsuario) {
 
         //Se busca un usuario existente
         Usuario usuarioExistente = usuarioRepository
@@ -80,11 +128,17 @@ public class CuentaServiceImpl {
         //Cuenta incluida por defecto
         Cuenta newCuenta = new Cuenta();
         newCuenta.setSaldo("0.00");
+        newCuenta.setMoneda(TipoMoneda.ARS);
 
         //Tarjeta por defecto incluida con la cuenta
         Tarjeta tarjeta = Tarjeta.builder()
                 .nombreTitular(usuarioExistente.getNombre().concat(" ").concat(usuarioExistente.getApellido()))
                 .topeGasto(newCuenta.getSaldo())
+                .tipo(TipoTarjeta.ALKYWALLET)
+                .marca(MarcaTarjeta.ALKYWALLET)
+                .cvv(Tarjeta.generarCVV())
+                .numeroTarjeta(Tarjeta.generarNumeroTarjeta())
+                .fechaVencimiento(Tarjeta.randomDate())
                 .build();
 
         newCuenta.setUsuario(usuarioExistente);
@@ -111,7 +165,6 @@ public class CuentaServiceImpl {
         return cuentaRepository.save(newCuenta);
     }
 
-    //TODO: hacer el "actualizar". Analizar en que casos de uso corresponde.
     public Cuenta actualizar(Cuenta cuenta, Long idCuenta) {
 
         Cuenta cuentaRegistrada = cuentaRepository
@@ -125,11 +178,24 @@ public class CuentaServiceImpl {
         return null;
     }
 
+    public void editarSaldo(Cuenta cuenta, Long idCuenta) {
+        Cuenta cuentaRegistrada = cuentaRepository
+                .findById(idCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + idCuenta + " no existe"));
+
+    }
+
+    /**
+     * Soft-delete de una cuenta por su id con efecto cascada en las tarjetas asociadas a esta.
+     *
+     * @param id
+     */
     public void eliminar(Long id) {
         Cuenta cuenta = cuentaRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("La cuenta con el id: " + id + " no existe"));
         cuenta.setEstado(false);
+        cuenta.getTarjetas().forEach(t -> t.setEstado(false));
         cuentaRepository.save(cuenta);
     }
 

@@ -10,6 +10,7 @@ import org.alkemy.alkywallet.utils.TipoMoneda;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @Getter
@@ -90,7 +91,6 @@ public class Cuenta {
         this.estado = true;
         this.fechaApertura = LocalDateTime.now();
         this.cbu = generarCBU();
-        this.setMoneda(TipoMoneda.ARS);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Cuenta {
      */
     private String generarCBU() {
         StringBuilder cbu = new StringBuilder();
-        java.util.Random random = new java.util.Random();
+        Random random = new Random();
 
         // Entidad bancaria (3 dígitos)
         for (int i = 0; i < 3; i++) {
