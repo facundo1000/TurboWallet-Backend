@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,18 +49,10 @@ public class Usuario {
     @Transient
     private Set<Cuenta> cuentas = new HashSet<>();
 
-    @Column(name = "fecha_registro")
-    private LocalDateTime fechaRegistro;
-
-    @Column(name = "fecha_actualizacion")
-    private LocalDateTime fechaActualizacion;
-
     private Boolean estado;
-
 
     @PrePersist
     private void init() {
-        this.fechaRegistro = LocalDateTime.now();
         this.estado = true;
     }
 
