@@ -23,17 +23,17 @@ public class Usuario extends AuditableEntity {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    @NotBlank(message = "Error. Coloque un nombre de usuario")
+    @NotBlank(message = "Error. Name cannot be blank")
     private String nombre;
 
-    @NotBlank
+    @NotBlank(message = "Error. Lastname cannot be blank")
     private String apellido;
 
     @Column(unique = true)
-    @Email
+    @Email(message = "Error. Email must be valid")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Error. Password cannot be blank")
     private String contrasenia;
 
     @ManyToMany(cascade = CascadeType.ALL)
