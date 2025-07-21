@@ -28,22 +28,6 @@ jobs:
       - name: Run tests
         run: mvn clean test
 
-      - name: Notify Slack
-        if: always() # Notifica siempre, independientemente del resultado
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "text": "El job de pruebas ha finalizado con estado: ${{ job.status }}",
-              "attachments": [
-                {
-                  "text": "Repositorio: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}"
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - name: Generate test report
         uses: dorny/test-reporter@v1
         if: always() && hashFiles('target/surefire-reports/*.xml') != ''
@@ -62,6 +46,22 @@ jobs:
           else
             echo "No surefire reports directory found"
           fi
+
+      - name: Notify Slack
+        if: always() # Notifica siempre, independientemente del resultado
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "El job de pruebas ha finalizado con estado: ${{ job.status }}",
+              "attachments": [
+                {
+                  "text": "Repositorio: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}"
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   build-and-push:
     needs: test
