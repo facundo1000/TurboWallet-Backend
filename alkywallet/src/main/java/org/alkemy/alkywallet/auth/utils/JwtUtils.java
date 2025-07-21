@@ -16,6 +16,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * JwtUtils is a utility class for creating and validating JWT tokens.
+ * It uses the HMAC256 algorithm for signing and verifying tokens.
+ * The secret key and user generator are injected from application properties.
+ *
+ * @author Facundo Martinez
+ */
+
 @Component
 public class JwtUtils {
 
