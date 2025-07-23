@@ -33,6 +33,7 @@ jobs:
       - name: Run tests
         id: test
         run: |
+          cd ./TurboWallet/TurboWallet-Back/alkywallet/pom.xml
           mvn clean test -B -V \
             -Dmaven.test.failure.ignore=false \
             -Dsurefire.useFile=true \
