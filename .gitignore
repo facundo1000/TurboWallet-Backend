@@ -34,3 +34,13 @@ build/
 ### VS Code ###
 .vscode/
 !/src/main/java/dev/fmartinez/securitypractice/models/UserAccount.java
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+
+# Secrets
+secrets/
+*.key
+*.pem
