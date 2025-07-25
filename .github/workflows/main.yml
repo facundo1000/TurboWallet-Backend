@@ -48,6 +48,7 @@ jobs:
 
       - name: Publish to GitHub Packages Apache Maven # This step publishes the Maven package to GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
+        working-directory: ./alkywallet
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
