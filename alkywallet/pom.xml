@@ -30,12 +30,8 @@
     <distributionManagement>
         <repository>
             <id>TurboWallet-Backend</id>
-            <url>https://github.com/facundo1000/TurboWallet-Backend/maven-releases/</url>
+            <url>https://maven.pkg.github.com/facundo1000/TurboWallet-Backend</url>
         </repository>
-        <snapshotRepository>
-            <id>TurboWallet-Backend</id>
-            <url>https://github.com/facundo1000/TurboWallet-Backend/maven-snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <properties>
@@ -188,5 +184,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
