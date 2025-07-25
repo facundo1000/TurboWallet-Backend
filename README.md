@@ -1,7 +1,9 @@
 # TurboWallet
-
 TurboWallet it's a simple wallet for accounts management
 and also different type of cards administration
+
+[![Docker Image Build and Push](https://github.com/facundo1000/TurboWallet-Backend/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/facundo1000/TurboWallet-Backend/actions/workflows/docker-image.yml)
+[![Build and Deploy](https://github.com/facundo1000/TurboWallet-Backend/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/facundo1000/TurboWallet-Backend/actions/workflows/main.yml)
 
 ### Technologies Used:
 
