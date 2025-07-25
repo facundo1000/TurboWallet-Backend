@@ -36,7 +36,7 @@ build/
 !/src/main/java/dev/fmartinez/securitypractice/models/UserAccount.java
 
 # Variables de entorno
-.env
+alkywallet/.env
 .env.local
 .env.production
 
