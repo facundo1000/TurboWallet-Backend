@@ -27,8 +27,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          server-id: TurboWallet-Backend # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name: Verify Maven installation
         run: mvn --version
@@ -46,11 +47,12 @@ jobs:
             -t turbowallet-backend:${{ github.sha }} \
             ./alkywallet
 
-      - name: Publish to GitHub Packages Apache Maven # This step publishes the Maven package to GitHub Packages
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
+      - name: Publish to GitHub Packages Apache Maven
+        run: mvn deploy -DskipTests
         working-directory: ./alkywallet
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          MAVEN_USERNAME: ${{ github.actor }}
+          MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
