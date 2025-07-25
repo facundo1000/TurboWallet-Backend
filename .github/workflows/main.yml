@@ -10,9 +10,16 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - uses: actions/labeler@v4
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -20,6 +27,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
       - name: Verify Maven installation
         run: mvn --version
@@ -29,13 +38,18 @@ jobs:
         run: mvn clean install -DskipTests
         working-directory: ./alkywallet
 
-      - name: Build Docker image
+      - name: Build Docker image # This step builds the Docker image using the Dockerfile in the alkywallet directory
         run: |
           docker build \
             --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
             --build-arg USER_GENERATOR=${{ secrets.USER_GENERATOR }} \
             -t turbowallet-backend:${{ github.sha }} \
             ./alkywallet
+
+      - name: Publish to GitHub Packages Apache Maven # This step publishes the Maven package to GitHub Packages
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -44,5 +58,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
-        run: docker push turbowallet-backend:${{ github.sha }}
+        run: |
+          docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}
+          docker push turbowallet-backend:${{ github.sha }}
 
