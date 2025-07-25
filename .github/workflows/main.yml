@@ -34,7 +34,7 @@ jobs:
           docker build \
             --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
             --build-arg USER_GENERATOR=${{ secrets.USER_GENERATOR }} \
-            -t myapp:${{ github.sha }} \
+            -t turbowallet-backend:${{ github.sha }} \
             ./alkywallet
 
       - name: Login to Docker Hub
@@ -44,5 +44,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
-        run: docker push myapp:${{ github.sha }}
+        run: docker push turbowallet-backend:${{ github.sha }}
 
