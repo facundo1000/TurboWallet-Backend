@@ -19,6 +19,14 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Build Docker image # This step builds the Docker image using the Dockerfile in the alkywallet directory
+      run: |
+        docker build \
+        --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+        --build-arg USER_GENERATOR=${{ secrets.USER_GENERATOR }} \
+        -t turbowallet-backend:${{ github.sha }} \
+        ./alkywallet
+
     - name: Push Docker image
       run: |
         docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}

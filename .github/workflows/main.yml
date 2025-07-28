@@ -9,6 +9,7 @@ on:
       - main
 jobs:
   build-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,20 +36,8 @@ jobs:
         run: mvn --version
         working-directory: ./alkywallet
 
-      - name: Build
-        run: mvn clean install -DskipTests
-        working-directory: ./alkywallet
-
-      - name: Build Docker image # This step builds the Docker image using the Dockerfile in the alkywallet directory
-        run: |
-          docker build \
-            --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
-            --build-arg USER_GENERATOR=${{ secrets.USER_GENERATOR }} \
-            -t turbowallet-backend:${{ github.sha }} \
-            ./alkywallet
-
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn package -DskipTests
+        run: mvn clean package -DskipTests
         working-directory: ./alkywallet
         env:
           MAVEN_USERNAME: ${{ github.actor }}
