@@ -13,21 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        uses: docker/build-push-action
+        with:
+          context: ./alkywallet
+          dockerfile: ./alkywallet/Dockerfile
+          push: false
+          tags: ${{secrets.DOCKER_USERNAME}}/turbowallet-backend:${{ date('%Y-%m-%d') }}-${{ github.sha }}
 
-    - name: Build Docker image # This step builds the Docker image using the Dockerfile in the alkywallet directory
-      run: |
-        docker build \
-        --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
-        --build-arg USER_GENERATOR=${{ secrets.USER_GENERATOR }} \
-        -t turbowallet-backend:${{ github.sha }} \
-        ./alkywallet
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push Docker image
-      run: |
-        docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}
-        docker push turbowallet-backend:${{ github.sha }}
+
+      - name: Push Docker image
+        run: |
+          docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}
+          docker push turbowallet-backend:${{ github.sha }}
