@@ -29,6 +29,12 @@ jobs:
 
 
       - name: Push Docker image
-        run: |
-          docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}
-          docker push turbowallet-backend:${{ github.sha }}
+        uses: docker/build-push-action
+        with:
+          context: ./alkywallet
+          dockerfile: ./alkywallet/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/turbowallet-backend:${{ date('%Y-%m-%d') }}-${{ github.sha }}
+#        run: |
+#          docker tag turbowallet-backend:${{ github.sha }} turbowallet-backend:${{ github.sha }}
+#          docker push turbowallet-backend:${{ github.sha }}
