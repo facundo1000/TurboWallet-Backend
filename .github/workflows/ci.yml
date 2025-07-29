@@ -12,7 +12,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./alkywallet
+          context: ./alkywallet/Dockerfile
           push: false
           tags: ${{vars.DOCKERHUB_USERNAME}}/turbowallet-backend:latest
 
@@ -32,6 +32,6 @@ jobs:
       - name: Push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./alkywallet
+          context: ./alkywallet/Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/turbowallet-backend:latest
