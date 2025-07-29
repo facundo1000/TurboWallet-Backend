@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - development
 
 jobs:
   build-login-push:
@@ -12,7 +13,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./alkywallet/Dockerfile
+          context: ./alkywallet
           push: false
           tags: ${{vars.DOCKERHUB_USERNAME}}/turbowallet-backend:latest
 
@@ -32,6 +33,6 @@ jobs:
       - name: Push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./alkywallet/Dockerfile
+          context: ./alkywallet
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/turbowallet-backend:latest
