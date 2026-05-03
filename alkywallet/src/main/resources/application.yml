@@ -6,6 +6,8 @@ spring:
     console:
       enabled: true # habilita la consola de la base de datos
       path: /h2 # permite modificar la url de la base de datos
+      settings:
+        web-allow-others: true
 
   #Conexion a base de datos
   datasource:
