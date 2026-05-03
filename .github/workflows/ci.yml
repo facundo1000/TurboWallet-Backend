@@ -7,14 +7,11 @@ on:
       - development
 
 jobs:
-  build-login-push:
+  build-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -22,17 +19,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./alkywallet
-          push: false
-          tags: ${{vars.DOCKERHUB_USERNAME}}/turbowallet-backend:latest
-
-
-      - name: Push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./alkywallet
-          push: true
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ vars.DOCKERHUB_USERNAME }}/turbowallet-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
