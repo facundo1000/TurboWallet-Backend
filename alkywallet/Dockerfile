@@ -1,15 +1,12 @@
-FROM maven:3.8.5-openjdk-17 AS build
+FROM maven:3.8.8-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
-RUN mvn clean install -DskipTests
+COPY pom.xml .
+RUN mvn dependency:go-offline -q
+COPY src ./src
+RUN mvn clean package -DskipTests -q
 
-ARG SECRET_KEY
-ARG USER_GENERATOR
-
-FROM openjdk:17.0.1-jdk-slim
-ENV SECRET_KEY=${SECRET_KEY}
-ENV USER_GENERATOR=${USER_GENERATOR}
-
-COPY --from=build /app/target/alkywallet.jar alkywallet.jar
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY --from=build /app/target/alkywallet.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/alkywallet.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
